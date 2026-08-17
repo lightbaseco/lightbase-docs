@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "aspen",
   "name": "Lightbase",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2469ff",
+    "light": "#5c8bff",
+    "dark": "#1a4fd6"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -60,8 +60,8 @@
     "default": "light"
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
+    "light": "/logo/lightbase-horizontal.png",
+    "dark": "/logo/lightbase-horizontal.png",
     "href": "https://www.lightbase.co/"
   },
   "navbar": {

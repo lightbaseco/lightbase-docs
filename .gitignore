@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*~
+*.swp
+*.swo
+.*.sw[a-p]
+
+# Node and the Mintlify CLI
+node_modules/
+.mint/
+.mintlify/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Claude Code local overrides (shared settings stay tracked)
+.claude/settings.local.json
+
+# Logs and temporary files
+*.log
+*.tmp
+.cache/

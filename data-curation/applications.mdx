@@ -1,28 +1,52 @@
 ---
-title: "Application management"
-description: "Manage applications, groups, and environments."
+title: "Applications"
+description: "Set the vocabulary, grouping, and scope of the applications your model is built around."
 ---
 
-<Note>
-  This page is a stub. It will document how to manage applications in Lightbase.
-</Note>
+**Applications** are the unit Lightbase reasons about. A flow starts at an entrypoint in one application, crosses into another over the network or a queue, and ends up writing to a database owned by a third. Every cross-service answer is phrased in terms of applications, so their names and their groupings are yours to define.
 
-## Application groups
+[Detection](/architecture/application-detection) takes its names from repositories and manifests, which is rarely how your organization refers to its services. In **Applications** you set that vocabulary, and the scope the model covers.
 
-Describe how to organize applications into groups.
-
-## Environment variables
-
-Describe how environment variables are managed per application.
-
-## Enable and disable
-
-Describe how to enable or disable an application.
+| You want to…                                                            | Do this                        |
+| ----------------------------------------------------------------------- | ------------------------------ |
+| Use the name your team says out loud                                    | Rename the application         |
+| Report flows and impact at product, domain, or team level               | Add it to an application group |
+| Resolve which database or endpoint its configuration points at          | Set its environment variables  |
+| Drop a deprecated service or a false positive out of the model          | Disable the application        |
+| Connect a producer and a consumer that spell the same topic differently | Curate its message queues      |
 
 ## Rename
 
-Describe how to rename an application.
+Rename an application to whatever your team calls it in Slack and in incident channels. The name propagates everywhere the application appears — flows, lineage, blast radius — so answers stop needing a translation step.
+
+## Application groups
+
+Group applications into the units you plan work around: a product, a domain, a platform, a team's surface area. Grouping lets Lightbase roll flows and impact up to that level, so a blast radius reports "three services in Payments" instead of listing nine repositories.
+
+## Environment variables
+
+Applications reach their databases and their peers through configuration, not hardcoded addresses. Supply the values behind those variables per environment and Lightbase resolves which [curated database](/data-curation/databases) or service endpoint a `DATABASE_URL` really points at. That is what turns an inferred connection into a confirmed one.
+
+## Enable and disable
+
+Disable an application to take it out of the model without changing what you index. It is the right move for a deprecated service, a folder of generated code, or a false positive from application detection.
+
+<Note>
+  Nothing is lost. The repository stays indexed, and enabling the application brings it back.
+</Note>
 
 ## Message queues
 
-Document message queue management for applications.
+Queues are one of the [external interactions](/architecture/external-interactions) Lightbase traces, and they are where cross-service flows usually break, because a producer and a consumer rarely agree on how to spell a topic.
+
+* **Name a queue or topic** in the terms your architecture documents use.
+* **Merge naming variants**, so one logical queue stops appearing as several.
+* **Confirm producers and consumers**, joining both ends into a single traceable flow.
+
+## Why it pays off
+
+Applications are the backbone of every cross-service answer Lightbase gives. Curating them is cheap — mostly renaming and grouping — and it is what makes flows, lineage, and blast radius readable to people who did not write the code.
+
+<Card title="How applications are detected" icon="search" href="/architecture/application-detection" horizontal arrow>
+  What detection is based on, and where it can get things wrong.
+</Card>

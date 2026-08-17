@@ -31,5 +31,7 @@ You explore that model to see the blast radius of a change before designing it, 
 </Columns>
 
 {/* Decorative background, positioned from the top of the page by style.css.
-    Kept last so it does not affect the spacing of the content above. */}
-<div className="lb-hero-bg" />
+    Kept last so it does not affect the spacing of the content above.
+    It has to be an <img> rather than a CSS background: Mintlify rewrites image
+    paths found in MDX to its CDN, and a url() in a stylesheet is not rewritten. */}
+<img className="lb-hero-bg" src="/images/background-cutout.png" alt="" />

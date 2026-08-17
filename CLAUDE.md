@@ -7,6 +7,11 @@
 - Configuration lives in `docs.json`
 - Custom CSS lives in `style.css`. Mintlify includes any `.css` file in the content
   directory on every page, so scope rules to a class used by the page that needs them
+- Never reference a repo asset from `url()` in CSS. Mintlify rewrites image paths it
+  finds in MDX to its CDN, and it does not rewrite `url()` inside a stylesheet, so the
+  path resolves against the deployed origin and returns 403. This works under
+  `mint dev`, which serves the repo from disk, and fails in production. Put the image
+  in the MDX as an `<img>` with a class, and style it from `style.css`
 - Use the Mintlify MCP server, `https://mcp.mintlify.com`, to edit content and settings via MCP
 - Use the Mintlify docs MCP server, `https://www.mintlify.com/docs/mcp`, to query information about using Mintlify via MCP
 - For Mintlify product knowledge (components, configuration, writing standards),
@@ -145,6 +150,12 @@ Scannable. Tables, consistent field order, short descriptions, no narrative.
 - Every image needs alt text describing what it shows. Use `alt=""` only for purely
   decorative graphics.
 - Avoid screenshots of pages that change often. Prefer a diagram or prose.
+- Decorative images still go in the MDX as an `<img>` with `alt=""` and a class, for
+  the CDN rewriting reason above. Position and mask them from `style.css`. Mintlify's
+  prose styles cap images at the column width, so a decorative image that bleeds past
+  the column needs `max-width: none`.
+- Check images in production, not only under `mint dev`. The two serve assets
+  differently.
 
 ## Callouts
 

@@ -28,12 +28,9 @@ main {
   /* Source is 1339px wide, so 669px renders 1:1 on a 2x display. Raising this
      past 669px starts upscaling and the dots go soft. */
   width: min(46vw, 669px);
-  aspect-ratio: 1339 / 1389;
+  height: auto;
+  max-width: none;
 
-  background-image: url("/images/background-cutout.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: top right;
   transform: translateY(-4%);
   opacity: 1;
 

@@ -1,0 +1,29 @@
+---
+title: "The indexing process"
+description: "How Lightbase indexes your code, per repo and across repos."
+---
+
+<Note>
+  This page is a stub. It will explain the high-level indexing process at a conceptual level.
+</Note>
+
+Unlike static analysis systems, Lightbase traces business flows end-to-end — even when a single flow spans multiple services through network calls, message queues, and other boundaries. This is what lets Lightbase link external service calls and database access back to the concrete business flows that drive them.
+
+## Per-repository analysis
+
+Describe how Lightbase indexes a single repository.
+
+## Cross-repository analysis
+
+Describe how Lightbase connects flows that span multiple repositories and services.
+
+## Initial vs. incremental indexing
+
+- **Initial indexing** — the first full analysis of your code.
+- **Incremental (delta) indexing** — updates as your code changes.
+  - Daily reindexing runs by default.
+  - Real-time indexing is available through your account manager.
+
+## Storage
+
+Describe, at a high level, how indexed results are stored.

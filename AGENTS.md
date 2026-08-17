@@ -29,5 +29,27 @@
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+* Don't document detailed internal working of the indexing process
+
+
+## High level content outline
+
+- A first high level version of the outline of the sections in the documentation is available in the outline.md file
+
+## References
+
+The documentation we are writing is aimed at developers to help them understand the capabilities, high level internal architecture concepts and security consideration they could be interested in as users of Lightbase. Some references of high quality documentation from other SaaS products we can use as inspiration are:
+- ## High level content outline
+
+- A first high level version of the outline of the sections in the documentation is available in the outline.md file
+
+## References
+
+The documentation we are writing is aimed at developers to help them understand the capabilities, high level internal architecture concepts and security consideration they could be interested in as users of Lightbase. Some references of high quality documentation from other SaaS products we can use as inspiration are:
+* https://www.tinybird.co/docs/forward/quickstarts
+* https://www.sketch.com/docs/getting-started/
+* https://docs.carto.com/carto-for-agents/carto-for-agents
+
+Think hard to build a good flowing documentation, walking the user through the product in an intuitive way, with an easy to follow, natural language aimed at a technical audience. 
+
+

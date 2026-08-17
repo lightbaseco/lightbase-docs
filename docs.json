@@ -34,10 +34,7 @@
       {
         "group": "MCP server",
         "pages": [
-          "mcp/overview",
-          "mcp/chat",
-          "mcp/blast-radius",
-          "mcp/data-lineage"
+          "mcp/overview"
         ]
       },
       {

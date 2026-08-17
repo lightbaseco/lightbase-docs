@@ -1,11 +1,51 @@
 ---
 title: "Infrastructure support"
-description: "Infrastructure analysis in Lightbase."
+description: "How Lightbase connects to your infrastructure and maps it alongside your code."
 tag: "In development"
 ---
 
-<Note>
-  This feature is in development. This page is a stub and will document infrastructure support as it becomes available.
-</Note>
+Infrastructure support is optional. Connect your infrastructure and Lightbase gains a fuller picture of your system: it picks up resource names that never appear in your code, uses them to infer relationships between components, and links your applications to the infrastructure they actually run on. It also improves how Lightbase answers questions in chat about your infrastructure.
 
-Describe how Lightbase analyzes infrastructure and how it connects to the rest of your system model.
+## AWS
+
+### Connecting your account
+
+To analyze your infrastructure, Lightbase needs read-only visibility into your AWS account. You grant access by creating a dedicated IAM role that trusts Lightbase, scoped to an external ID unique to your organization — the standard AWS pattern for third-party account access, which also stops anyone else from assuming that role on your behalf.
+
+<Info>
+  Permissions are strictly read-only. Lightbase only ever calls `Describe`, `List`, and `Get` operations, and never creates, modifies, or deletes anything in your account. For AWS Secrets Manager specifically, Lightbase reads metadata such as name and rotation configuration — never the secret value itself.
+</Info>
+
+If your AWS account belongs to an AWS Organization, Lightbase can also discover its member accounts, giving you a unified infrastructure picture across your whole organization instead of connecting every account one by one.
+
+### What Lightbase discovers
+
+Lightbase catalogs your AWS resources by service:
+
+| Service | Resources |
+|---|---|
+| Compute (EC2) | Instances, volumes, network interfaces |
+| Networking | VPCs, subnets, route tables, network ACLs, internet/NAT gateways, VPC endpoints, elastic IPs |
+| Load balancing | Load balancers (ALB/NLB/Gateway) and target groups |
+| Auto Scaling | Auto Scaling groups |
+| Storage | S3 buckets |
+| Serverless | Lambda functions |
+| Databases | DynamoDB tables |
+| Messaging | SQS queues |
+| Identity and access (IAM) | Users, roles, and groups |
+| Secrets | Secrets Manager entries (metadata only) |
+| Content delivery | CloudFront distributions |
+| DNS and domains | Route 53 hosted zones and registered domains |
+| APIs | API Gateway REST and HTTP APIs |
+| Global networking | Global Accelerator accelerators |
+
+### How resources connect
+
+Beyond listing resources, Lightbase maps how they relate to each other.
+
+- **Network relationships** — which VPC and subnet a resource sits in, which security groups protect it, and which load balancer routes to which targets.
+- **Access relationships** — parses IAM policies, both inline and attached, to work out which roles and users can reach which resources and assume which roles.
+
+<Warning>
+  Lightbase also identifies users, roles, and groups whose policies grant full administrator access — any statement allowing `Action: "*"` over `Resource: "*"` — so you can find them when you query your infrastructure.
+</Warning>

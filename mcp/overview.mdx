@@ -1,24 +1,100 @@
 ---
 title: "MCP server"
-description: "Query your codebase model through the Lightbase MCP server."
+description: "Give your coding agent full context of your system through the Lightbase MCP server."
+tag: "In development"
 ---
 
-<Note>
-  This page is a stub. It will introduce the Lightbase MCP server and how to connect to it.
-</Note>
+The Lightbase MCP server gives AI agents direct access to the model of your system that Lightbase builds — how your applications call each other, the resources they share, and the flows that connect them. It implements the Model Context Protocol standard for exposing tools and context to agents. Use it when your agent needs context beyond the current repository: who calls a use case, what a change affects downstream, or how two services are connected.
 
-The Lightbase MCP server lets you query the model of your system that Lightbase builds.
+## Before you start
 
-## Capabilities
+You need:
 
-<CardGroup cols={2}>
-  <Card title="Chat" icon="comments" href="/mcp/chat">
-    Ask questions about your codebase in natural language.
-  </Card>
-  <Card title="Blast radius" icon="explosion" href="/mcp/blast-radius">
-    Understand the downstream impact of a change.
-  </Card>
-  <Card title="Data lineage" icon="diagram-project" href="/mcp/data-lineage">
-    Trace how data flows through your system.
-  </Card>
-</CardGroup>
+- A Lightbase account with at least one repository connected and indexed.
+- An MCP client that supports Streamable HTTP, or one that can run a local bridge like `mcp-remote` for clients that only support local servers.
+
+## Connect to the MCP server
+
+Point your client at the Lightbase MCP server:
+
+```
+https://mcp.lightbase.co
+```
+
+<Info>
+  There's no token to generate or pass — the server authenticates the call directly. Connecting for the first time opens a browser window to sign in with your Lightbase account.
+</Info>
+
+<Tabs>
+  <Tab title="VS Code">
+    Add the server to `.vscode/mcp.json`:
+
+    ```json .vscode/mcp.json
+    {
+      "servers": {
+        "lightbase": {
+          "url": "https://mcp.lightbase.co"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    Add the server to `.cursor/mcp.json`:
+
+    ```json .cursor/mcp.json
+    {
+      "mcpServers": {
+        "lightbase": {
+          "url": "https://mcp.lightbase.co"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="IntelliJ">
+    Go to **Settings | Tools | AI Assistant | Model Context Protocol (MCP)**, click **Add**, and paste:
+
+    ```json
+    {
+      "mcpServers": {
+        "lightbase": {
+          "url": "https://mcp.lightbase.co"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http lightbase https://mcp.lightbase.co
+    ```
+  </Tab>
+  <Tab title="Codex">
+    Add the server to `~/.codex/config.toml`:
+
+    ```toml ~/.codex/config.toml
+    [mcp_servers.lightbase]
+    url = "https://mcp.lightbase.co"
+    ```
+  </Tab>
+</Tabs>
+
+Any other MCP-compatible editor or agent accepts the same server URL — check its own MCP documentation for the exact configuration format.
+
+## Available tools
+
+| Tool | Description |
+|---|---|
+| `query` | Ask questions that need context beyond the current repository — cross-service calls, downstream impact, or how applications connect to each other. |
+
+## Query
+
+`query` gives your agent context far beyond what it can see in the current repository. Lightbase tracks how your whole system behaves — not just one application, but how applications work together. It can tell your agent:
+
+- Who calls into a given use case, and what that use case calls in turn.
+- Whether a change ripples out to other microservices or external counterparties.
+- The consequences of a change beyond the code itself.
+- How shared resources — databases, message topics, queues — connect different applications.
+
+`query` accepts two optional parameters to focus its answer: the file your question relates to, and the name of the function that best represents the behavior you're asking about.

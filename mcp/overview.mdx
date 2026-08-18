@@ -15,15 +15,17 @@ You need:
 
 ## Connect to the MCP server
 
-Point your client at the Lightbase MCP server:
+Every MCP client connects to the same Lightbase endpoint:
 
 ```
 https://mcp.lightbase.co
 ```
 
 <Info>
-  There's no token to generate or pass — the server authenticates the call directly. Connecting for the first time opens a browser window to sign in with your Lightbase account.
+  You don't generate or pass a token. The server authenticates each call directly, and your first connection opens a browser window to sign in with your Lightbase account.
 </Info>
+
+Add the endpoint to your client's configuration. The exact format depends on the client:
 
 <Tabs>
   <Tab title="VS Code">
@@ -80,7 +82,7 @@ https://mcp.lightbase.co
   </Tab>
 </Tabs>
 
-Any other MCP-compatible editor or agent accepts the same server URL — check its own MCP documentation for the exact configuration format.
+Any other MCP-compatible editor or agent uses the same server URL. Check its own MCP documentation for the exact configuration format.
 
 ## Available tools
 

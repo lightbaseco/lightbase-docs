@@ -1,0 +1,51 @@
+---
+title: "Quickstart"
+description: "Connect Lightbase, build your model, and query it from your AI client."
+---
+
+Lightbase connects to your source control, indexes the repositories you choose, and builds a model of how your system works. This page walks you through connecting a provider, letting Lightbase build that model, and querying it from your AI client.
+
+## Before you start
+
+You need:
+
+- Admin access in your Lightbase organization
+- Permission to authorize or install integrations in your source control provider
+- Access to the repositories, group, or workspace you want Lightbase to use
+
+## Set up Lightbase
+
+<Steps>
+  <Step title="Connect your source control provider">
+    Connect Lightbase to GitHub, GitLab, or Bitbucket. This authorizes Lightbase to read the repositories you choose. See [Source providers](/getting-started/source-providers) for the per-provider steps and requirements.
+  </Step>
+  <Step title="Select the repositories to index">
+    During the connection, you choose which repositories Lightbase indexes. The rest stay disabled and are excluded from analysis. You can change this selection at any time. See [Repository management](/getting-started/repositories) to edit it later.
+  </Step>
+  <Step title="Lightbase builds your model">
+    Lightbase indexes the selected repositories automatically to build the first version of your organization's model. You don't need to trigger anything. See [the indexing process](/architecture/indexing-process) for what happens during the initial index.
+  </Step>
+  <Step title="Connect the MCP server">
+    Give your AI client access to your model through the Lightbase MCP server. Point your client at:
+
+    ```
+    https://mcp.lightbase.co
+    ```
+
+    The server authenticates the call directly, with no token to generate or pass. The first connection opens a browser window to sign in with your Lightbase account. See [MCP server](/mcp/overview) for per-client setup, including VS Code, Cursor, and Claude Code.
+  </Step>
+  <Step title="Curate your data (optional)">
+    Data curation aligns the inferred model with the names and structure your team uses. See [Data curation](/data-curation/overview) to learn what you can refine.
+  </Step>
+</Steps>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Repository management" icon="folder-tree" href="/getting-started/repositories">
+    Add or remove repositories and control what Lightbase indexes after installation.
+  </Card>
+  <Card title="Query with the MCP server" icon="comments" href="/mcp/overview">
+    Connect your AI client and ask questions that span your whole system.
+  </Card>
+</Columns>

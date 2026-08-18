@@ -1,26 +1,77 @@
 ---
 title: "Installing Lightbase"
-description: "Connect Lightbase to your source control and run your first index."
+description: "Connect Lightbase to your source control."
 ---
-
-<Note>
-  This page is a stub. It will walk you through installing Lightbase and connecting it to your source control provider.
-</Note>
 
 ## Overview
 
-Describe the high-level installation flow: creating an account, connecting a source control provider, and kicking off an initial index.
+To use Lightbase with your codebase, you first need to connect your source control provider and choose the repositories you want to include.
 
-## Steps
+Lightbase currently supports:
 
-<Steps>
-  <Step title="Connect your source control provider">
-    Link Lightbase to GitHub, GitLab, or Bitbucket. See [Source control providers](/getting-started/source-control).
-  </Step>
-  <Step title="Choose repositories to index">
-    Select which repositories Lightbase should analyze. See [Selecting repositories](/getting-started/repositories).
-  </Step>
-  <Step title="Run the initial index">
-    Start the first analysis. See [Indexing your code](/getting-started/indexing).
-  </Step>
-</Steps>
+- **GitHub**
+- **GitLab**
+- **Bitbucket**
+
+In all cases, you need:
+
+- Admin access in your Lightbase organization
+- Permission to authorize or install integrations in your source control provider
+- Access to the repositories, group, or workspace you want Lightbase to use
+
+## Connecting with the source provider
+
+Lightbase connects to your source control provider through the provider’s authorization flow — OAuth for GitLab and Bitbucket, and GitHub App installation flow for GitHub.
+Once the connection is approved, Lightbase receives an access token that will be used for:
+
+- Listing the repositories available for that access token
+- Reading repository metadata such as branches and commits
+- Fetching the code from your repository during analysis
+
+For providers that require an extra scope-selection step, such as choosing a GitLab group or Bitbucket workspace, the token is only used within the selected scope.
+
+<Note>
+  Your access tokens are encrypted at rest, and Lightbase only ever reads your code. Learn more in [Code storage](/security/code-storage).
+</Note>
+
+### GitHub
+
+To connect GitHub, start the GitHub connection flow in Lightbase and authorize the integration in GitHub. You can select in which organization you want to install the GitHub app.
+Depending on how the GitHub organization is managed, an owner or admin may need to approve the installation before it becomes active. If that's not you, your request is sent to an owner for approval.
+
+Once the connection is approved, GitHub shows the repositories Lightbase will have access to. You can select all of them or choose a subset.
+
+After the installation, the Lightbase GitHub app appears listed under the "GitHub Apps" section in your GitHub organization settings.
+
+### GitLab
+
+To connect GitLab, authorize the integration in GitLab and then choose the top-level GitLab group you want Lightbase to use. Lightbase uses that group to discover the repositories available for selection.
+
+In GitLab, integrations are done through an OAuth flow and are linked to a particular account, not a group. We recommend creating a dedicated account instead of using your personal one, so more people can access the integration if necessary.
+After installation, the Lightbase app is listed under the "Authorized applications" section in the account settings.
+
+### Bitbucket
+
+To connect Bitbucket, authorize the integration in Bitbucket and then choose the Bitbucket workspace you want Lightbase to use. Lightbase uses that workspace to discover the repositories available for selection.
+
+In Bitbucket, integrations are done through an OAuth flow and are linked to a particular account, not a workspace or organization. We recommend creating a dedicated account instead of using your personal one, so more people can access the integration if necessary.
+
+
+## Selecting repositories
+
+After you connect a provider, Lightbase sees all the repositories available for the access token, including any public repository.
+You can select which repositories Lightbase should index, and the rest are marked as disabled and excluded from any analysis.
+
+The selected repositories are indexed automatically after installation and then monitored periodically for changes.
+See [Repository management](/getting-started/repositories) for more details on repository management and synchronization.
+
+## What happens next
+
+<CardGroup cols={2}>
+  <Card title="Indexing your code" icon="magnifying-glass-chart" href="/getting-started/indexing">
+    Learn what happens during the initial index and what to expect once it completes.
+  </Card>
+  <Card title="Repository management" icon="folder-tree" href="/getting-started/repositories">
+    Add or remove repositories and control what Lightbase indexes after installation.
+  </Card>
+</CardGroup>

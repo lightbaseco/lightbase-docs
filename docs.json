@@ -15,7 +15,6 @@
         "group": "Getting started",
         "pages": [
           "getting-started/installation",
-          "getting-started/source-control",
           "getting-started/repositories",
           "getting-started/indexing"
         ]

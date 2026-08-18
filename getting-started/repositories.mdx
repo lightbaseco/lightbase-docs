@@ -1,26 +1,58 @@
 ---
-title: "Selecting repositories"
-description: "Control which repositories Lightbase indexes."
+title: "Repository management"
+description: "Enable or disable repositories, and see how Lightbase keeps them in sync."
 ---
 
+Once you connect a provider and choose your initial repositories during [installation](/getting-started/installation), Lightbase keeps that set indexed and up to date. From the **Repositories** page you can review the state of each repository, turn indexing on or off, and see which repositories Lightbase is tracking.
+
+Managing repositories requires **admin access** in your Lightbase organization.
+
+## Repository status
+
+Each repository shows a status that tells you where it is in the indexing lifecycle:
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** | The repository is queued and waiting for its first index. |
+| **Syncing** | Lightbase is indexing the repository right now. |
+| **Synced** | The repository is indexed and up to date. |
+| **Failed** | The last index did not complete successfully. Lightbase retries it on the next sync. |
+| **Empty** | The repository has no commits to index. |
+| **Unsupported** | Lightbase could not index the repository's contents. |
+| **Disabled** | Indexing is turned off for the repository. |
+
+## Enabling and disabling repositories
+
+You control which repositories Lightbase indexes at any time. From the repositories list, an admin can disable a repository to stop indexing it, or enable a previously disabled one.
+
+When you **disable** a repository, Lightbase stops indexing it and removes the analysis it has already produced for that repository. The repository stays in your list marked as **Disabled**, but it no longer contributes to your architecture map, and it is skipped during synchronization.
+
+When you **enable** a repository again, Lightbase queues it as **Pending** and indexes it from scratch on the next sync.
+
 <Note>
-  This page is a stub. It will explain how to limit and configure the set of repositories Lightbase indexes.
+  Disabling a repository removes its existing analysis. If you enable it again later, Lightbase indexes it fresh rather than restoring the previous results.
 </Note>
 
-You can control exactly which repositories Lightbase analyzes.
+## Repositories Lightbase doesn't index
 
-## Limiting repositories
+Some repositories are left out automatically, either when Lightbase first lists what it can access or during ongoing synchronization:
 
-Describe how to include or exclude repositories from indexing.
+- **Empty repositories** — repositories with no commits are marked **Empty** and skipped. If commits are added later, Lightbase picks the repository up on the next sync.
+- **Archived repositories** — repositories your provider has archived are excluded and not offered for indexing.
+- **Unsupported repositories** — if the indexer cannot process a repository's contents, it is marked **Unsupported** and skipped.
 
-### Archived repositories
+Lightbase does not distinguish between public and private repositories: it indexes any repository within the access you grant, including public ones. You control that scope through the access you authorize in your provider and the repositories you select.
 
-Explain how archived repositories are handled.
+## How synchronization works
 
-### Configuration
+Lightbase periodically scans the repositories in your connected provider to keep your model up to date. On each scan it:
 
-Describe the configuration options for scoping repositories.
+- **Adds new repositories.** Repositories that have appeared in your provider are added and queued for indexing automatically. If you don't want new repositories to be automatically included, contact us and we'll disable this feature for you.
+- **Removes deleted repositories.** Repositories that have been deleted or are no longer accessible are removed from Lightbase, along with the analysis produced for them.
+- **Detects new commits.** Lightbase checks each repository's default branch for new commits since the last index. When it finds new commits, it triggers a fresh indexing run so your architecture map reflects the latest code.
 
-<Note>
-  Public repositories are also scanned. Document the implications and how to control this.
-</Note>
+## What's next
+
+<Card title="Indexing your code" icon="magnifying-glass-chart" href="/getting-started/indexing">
+  Learn what happens during indexing and what to expect once it completes.
+</Card>

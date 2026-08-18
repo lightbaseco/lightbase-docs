@@ -11,18 +11,23 @@ description: "Connect your cloud account so Lightbase relates your code to the i
 
 Lightbase can index your cloud infrastructure, adding it to the context it already has about your organization and raising the level of detail in the model it builds of your system. Connecting your infrastructure is useful in several ways:
 
-- Lightbase answers questions that are purely about infrastructure, in chat or through the MCP server:
+- **Infrastructure indexing lets Lightbase answer questions about cloud resources.** It answers them in chat or through the MCP server. Examples include:
 
-  <Card title="Example questions">
-    - Which API Gateway endpoints are backed by this Lambda function?
-    - Which buckets are publicly accessible?
-    - Which roles can read from the `customer-data` table?
-    - Is the payments API reachable from the internet, or only from inside the VPC?
-  </Card>
+  - Which API Gateway endpoints are backed by this Lambda function?
+  - Which buckets are publicly accessible?
+  - Which roles can read from the `customer-data` table?
+  - Is the payments API reachable from the internet, or only from inside the VPC?
 
-- Lightbase relates each application to the infrastructure it runs on, down to the instance, container, or function serving it. That knowledge lets Lightbase anticipate problems before they cause an incident, and troubleshoot failures where the cause isn't only the code: an application hitting a scaling limit, a misconfigured gateway stopping requests, a service account missing a permission it needs at runtime, or a security group blocking a connection the code expects to make.
-- Lightbase resolves the connections it already finds more precisely. Connections between parts of your code, and between applications across your organization, come from the code alone. Some of the detail behind them sits in environment variables, and those values only exist in your infrastructure. Reading them there turns a reference Lightbase can't resolve from the code into the actual resource it points to.
-- Lightbase indexes serverless function code that isn't versioned in your repositories. When a function's source only exists in your cloud account, Lightbase reads it from the function itself. It lands in the model alongside the rest of your code. That covers functions edited directly in the console and functions deployed from outside version control.
+- **Lightbase relates each application to the infrastructure it runs on.** The relationship extends to the instance, container, or function serving it. This context lets Lightbase anticipate problems before they cause an incident and troubleshoot failures where the cause isn't only the code. Examples include:
+
+  - An application hitting a scaling limit
+  - A misconfigured gateway stopping requests
+  - A service account missing a permission it needs at runtime
+  - A security group blocking a connection the code expects to make
+
+- **Infrastructure context adds precision and detail to the connections Lightbase finds in code.** Some of the information behind those connections exists only in the infrastructure. Lightbase incorporates this infrastructure context into the model.
+
+- **Direct cloud access lets Lightbase index serverless code outside connected repositories.** When a function's source exists only in a cloud account, Lightbase reads it directly from the function. The source becomes part of the model alongside code from connected repositories. This includes functions edited in the console or deployed outside version control.
 
 ## Cloud providers
 
@@ -113,46 +118,61 @@ Lightbase catalogs your AWS resources by service. The groups below cover the ser
 
 <AccordionGroup>
   <Accordion title="Compute (EC2)" description="Instances, volumes, and network interfaces.">
-    EC2 instances are where Lightbase anchors an application to the machine that runs it. That link tells you which applications share a host, which volumes they depend on, and which network interfaces carry their traffic. When you are diagnosing a failure the code does not explain, it gives you the host to look at.
+    EC2 instances run applications on virtual machines, with volumes for block storage and network interfaces for VPC connectivity.
+
+    Lightbase links each application to the instance that runs it. It records shared hosts, attached volumes, and network interfaces. These relationships identify the compute, storage, and network resources involved in failures that code alone cannot explain.
   </Accordion>
-  <Accordion title="Networking" description="VPCs, subnets, route tables, network ACLs, internet and NAT gateways, VPC endpoints, and elastic IPs.">
-    Networking is what tells Lightbase how much of your system each application can see. Lightbase places every resource in its VPC and subnet, and records the security groups protecting it. From there you can tell whether an application is reachable from the internet, or only from inside the VPC. Route tables, network ACLs, gateways, and VPC endpoints describe how a connection leaves your network, which is what you check when the code expects a connection that never happens.
+  <Accordion title="Networking" description="VPCs, subnets, security groups, and gateways.">
+    VPCs and subnets define network boundaries, while security groups, route tables, and gateways control which resources can communicate and where traffic can go.
+
+    Lightbase places resources in their VPCs and subnets and records the security groups that protect them. It uses routes, network ACLs, gateways, and VPC endpoints to determine whether an application is internet-facing and reconstruct how expected connections traverse the network.
   </Accordion>
   <Accordion title="Load balancing" description="Load balancers (ALB, NLB, and Gateway) and target groups.">
-    Load balancers are the front door of an application. Target groups tell Lightbase which instances or functions sit behind a listener, so a route in your code connects to the hostname callers actually use. They also show how one application spreads across targets, and where public traffic enters your account.
+    Load balancers accept traffic on listeners and distribute it across instances or functions registered in target groups.
+
+    Lightbase maps listeners and target groups to the applications behind them. These relationships connect code routes to the hostnames callers use, show how an application is distributed across targets, and identify where public traffic enters the account.
   </Accordion>
   <Accordion title="Auto Scaling" description="Auto Scaling groups.">
-    Auto Scaling groups give the capacity range an application runs within. Reading them tells you the ceiling an application hits under load, so you can trace an incident back to a scaling limit.
+    Auto Scaling groups maintain a configured number of EC2 instances and adjust capacity within minimum and maximum limits.
+
+    Lightbase relates those limits to the applications running in the group. It uses the maximum capacity to identify scaling ceilings that can explain failures under load.
   </Accordion>
   <Accordion title="Storage" description="S3 buckets.">
-    Buckets hold data your flows depend on, and the bucket's configuration decides what you can do with that data. Lightbase resolves which applications read and write each bucket, and reads its access, exposure, and retention configuration alongside them. That tells you who can reach the data, whether it is reachable from the internet, and how long it stays there. Retention is what tells you whether an invoice written last quarter is still in the bucket.
+    S3 buckets store objects used by code flows. Bucket policies and configuration control access, public exposure, and retention.
+
+    Lightbase resolves which applications read from and write to each bucket. It records access, exposure, and retention settings alongside those relationships. This shows who can reach the data, whether it is internet-accessible, and how long stored objects remain available. For example, retention settings indicate whether an invoice written last quarter remains in the bucket.
   </Accordion>
   <Accordion title="Serverless" description="Lambda functions.">
-    Lambda functions often hold code that never reaches a repository, because someone edited it in the console or deployed it from outside version control. Lightbase reads the source from the function itself and indexes it with the rest of your code, so a flow that passes through the function keeps going. It also reads the function's configuration and environment variables, which resolve the resources the function talks to.
+    Lambda functions run code in response to events without a persistent server. AWS stores their deployed source and runtime configuration.
+
+    Lightbase reads and indexes the deployed source, including code that never reached a connected repository. This keeps a code flow connected as it passes through the function. Lightbase also reads function configuration and environment variables to resolve the resources the function accesses.
   </Accordion>
   <Accordion title="Databases" description="DynamoDB tables.">
-    Tables in your cloud account are the source of truth for your data layer, and code is a partial description of it. Reading the tables directly gives Lightbase the keys and indexes your queries rely on, which raises the precision of your [curated schema](/data-curation/databases). Lightbase also resolves which roles and applications can reach each table, so the access your code implies is confirmed against the permissions that exist.
+    DynamoDB tables store items under partition and optional sort keys. Secondary indexes support additional query patterns.
+
+    Lightbase reads table keys and indexes to add infrastructure context to the [curated schema](/data-curation/databases). It resolves which roles and applications can access each table. This confirms whether the permissions in AWS support the data access found in code.
   </Accordion>
   <Accordion title="Messaging" description="SQS queues.">
-    Queues are where cross-application flows usually break, because a producer and a consumer rarely spell a queue the same way. Reading the queues in your account gives Lightbase the real queue, so both ends of a flow attach to the same one. It also brings in each queue's own configuration, and the applications permitted to send to it or receive from it.
+    SQS queues buffer messages between producers and consumers, allowing applications to exchange work asynchronously.
+
+    Lightbase uses the queue resources in an AWS account to attach producers and consumers to the same queue, even when code refers to it differently. It also records queue configuration and the applications permitted to send or receive messages.
   </Accordion>
   <Accordion title="Identity and access (IAM)" description="Users, roles, and groups.">
-    IAM decides what your code is allowed to do at runtime. Lightbase parses policies, both inline and attached, to resolve which users and roles reach which resources, and which roles they can assume. That turns an intended access into a confirmed one: your application calls `PutObject` on a bucket, and the role it runs under either allows the call or does not. Lightbase also flags users, roles, and groups whose policies grant full administrator access, so you can find them when you query your infrastructure.
-  </Accordion>
-  <Accordion title="Secrets" description="Secrets Manager entries, metadata only.">
-    Applications reach their databases and their counterparties through credentials they read at runtime. Lightbase links the code that reads a secret to the entry behind it, using metadata such as its name and rotation configuration, never the value.
+    IAM users, roles, and groups define identities in an AWS account. Attached and inline policies control which actions those identities can perform on resources.
+
+    Lightbase parses both policy types to resolve which users and roles can access each resource and which roles they can assume. It compares those permissions with operations found in code, such as `PutObject` on an S3 bucket. Lightbase also identifies users, roles, and groups with full administrator access.
   </Accordion>
   <Accordion title="DNS and domains" description="Route 53 hosted zones and registered domains.">
-    Hosted zones hold the names your system answers to. Lightbase resolves a hostname, whether it appears in a client's HTTP call or in an application's configuration, to the resource that serves it. For an application reachable from the internet, this is how you get the real domain in front of it instead of a load balancer's generated name.
+    Route 53 hosted zones contain the DNS records that route traffic for a domain. Registered domains identify the internet names managed through the account.
+
+    Lightbase resolves hostnames from HTTP calls and application configuration to the resources that serve them. For internet-facing applications, this connects generated load balancer names to the public domains callers use.
   </Accordion>
   <Accordion title="APIs" description="API Gateway REST and HTTP APIs.">
-    An API Gateway API defines an application's routes outside its code. Lightbase maps each route to the function or application behind it, so an [entrypoint](/architecture/entrypoints) found in a Lambda function connects to the path and method callers use. It also shows which routes are exposed, and under which stage.
+    API Gateway REST and HTTP APIs expose routes that forward requests to integrations such as Lambda functions and application backends.
+
+    Lightbase maps each gateway route to the function or application behind it. This connects an [entrypoint](/architecture/entrypoints) found in code to the path, method, and stage used by callers. Lightbase also records which routes are exposed.
   </Accordion>
 </AccordionGroup>
-
-<Note>
-  Resources and their configuration are read exactly, from the AWS APIs. The link between an application and the resource it runs on or reaches is proposed. It depends on resolving names and environment variables, and you can correct it in [data curation](/data-curation/applications).
-</Note>
 
 <Columns cols={2}>
   <Card title="How applications are detected" icon="search" href="/architecture/application-detection" horizontal arrow />

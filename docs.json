@@ -24,9 +24,7 @@
         "pages": [
           "architecture/indexing-process",
           "architecture/languages",
-          "architecture/application-detection",
-          "architecture/entrypoints",
-          "architecture/external-interactions",
+          "architecture/counterparties",
           "architecture/infrastructure"
         ]
       },

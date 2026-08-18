@@ -4,7 +4,13 @@ description: "Lightbase is the code intelligence layer that helps engineers and 
 keywords: ["code intelligence", "blast radius", "impact analysis", "data lineage", "microservices"]
 ---
 
-Real production codebases span hundreds or thousands of services, with interdependencies that are difficult to anticipate. Projects start with an incomplete list of the services they need to touch, and an edit to one breaks another downstream.
+<div className="lb-flow">
+  <Frame caption="Visualizing a flow traced across service boundaries in the Lightbase UI">
+    <img src="/images/flow.png" alt="A Lightbase code flow showing upstream callers in two services, an HTTP entrypoint, and the functions it calls downstream" />
+  </Frame>
+</div>
+
+Real production codebases can span hundreds or thousands of services, with relationships between them that are not always clear. A change in one service can easily have unintended consequences in downstream consumers, especially when they belong to other teams. This increases the risk of production incidents or subtle data corruption that could be harder to detect.
 
 Lightbase is the code intelligence layer for large codebases, built on a model of every service, endpoint, call between services, and the data they share. It indexes your repositories and traces each code flow from the entrypoint that starts it to the databases, queues, and external providers it reaches.
 
@@ -31,7 +37,7 @@ You explore that model while designing new functionality, and your agents reach 
   </Frame>
 </div>
 
-To get started, [connect your source control provider and run your first index](/getting-started/quickstart).
+To get started, [connect your source control provider and run your first index](/getting-started/installation).
 
 {/* Decorative background, positioned from the top of the page by style.css.
     Kept last so it does not affect the spacing of the content above.

@@ -24,7 +24,9 @@ One term per concept. Check an existing page before introducing a new one.
 - **service** for a deployable unit of the system. Lightbase's own features are named
   after applications (application detection, application groups), so use "application"
   only on the pages that document those surfaces
-- **model**, not map, graph, or representation, for what Lightbase builds
+- **Indexer**, no article, for the component that analyzes code: "Indexer reads",
+  "Indexer identifies". Reserve **Lightbase** for what the company does
+- **the model**, not map, graph, or representation, for what indexing produces
 - **code flow**, not trace or path, for one execution path through the system
 - **entrypoint** for the HTTP route, queue consumer, or CLI command that starts a flow
 - **counterparty** for an external entity the code interacts with
@@ -33,10 +35,18 @@ One term per concept. Check an existing page before introducing a new one.
 
 ## Style preferences
 
+The register is technical documentation for architects and engineers at large
+organizations. Not friendly, not conversational, not selling. Flat declarative sentences
+that state what the system does.
+
 ### Voice
 
-- Second person. The reader is a developer, engineering manager, or architect.
-  Don't name their role: "You explore that model", not "Engineers explore that model".
+- The reader is a developer, engineering manager, or architect. Don't name their role.
+- Explanation and reference pages describe the system, not the reader. Use the impersonal
+  voice: "the connected repositories", not "your repositories". How-to pages take second
+  person, because the reader performs the steps: "Click **Settings**".
+- Name the actor doing the work. Indexer reads, resolves, records, reconstructs.
+  Reserve "Lightbase" for what the company does, such as a curation pass during rollout.
 - Active voice, present tense.
 - Define a term where it first appears rather than linking away to its definition.
 - Don't name internal surfaces like the UI or dashboard unless a page documents them.
@@ -45,9 +55,23 @@ One term per concept. Check an existing page before introducing a new one.
 
 ### Sentences and paragraphs
 
-- Under 25 words per sentence. One idea per sentence.
-- If a sentence needs several commas or semicolons to hold together, split it.
-- Two to four sentences per paragraph.
+- 25 words is a ceiling, not a target. Uniform length is what makes prose tick like a
+  metronome.
+- Vary length and shape. Watch for claim-then-gloss repeating down a paragraph: a short
+  assertion, its explanation, another short assertion, its explanation.
+- Say the specific thing first. Naming something vague and then clarifying it with a colon
+  says everything twice: "reanalyze what changed: the files in new commits" is just
+  "reanalyze the files in new commits". A colon that defines a term the page needs is fine.
+- Cut the sentence that sets up the real sentence. "Nothing in the source states where a
+  service ends, so those boundaries are inferred" is throat-clearing before "in some cases
+  this heuristic leads to incorrect boundaries".
+- Prefer the concrete instance to the abstraction it illustrates. "Ask which operations
+  write to `payment_intents`" beats "questions resolve at the level of a business operation".
+- One thought per sentence. Split when the reader has to hold two unrelated ideas at once,
+  not merely because the sentence contains commas.
+- One to four sentences per paragraph. A single-sentence paragraph is a legitimate beat;
+  don't pad to reach three.
+- Short declaratives are for emphasis. When every sentence is short, none of them is.
 - Numbered sequences for steps, never run-on prose.
 - Sentence case headings that answer a question rather than label a topic.
 - Never skip heading levels. No H1 in the body; the title comes from frontmatter.
@@ -70,6 +94,19 @@ These read as machine-written. Rewrite as a plain statement.
 - Triads for rhythm. "faster, safer, and more predictable."
 - Filler and self-praise. "simply", "just", "seamless", "powerful", "robust".
 - Editorializing. Document function, not impressiveness.
+- Sentences that explain their own logic. "Because each interaction is recorded against
+  the flow, questions resolve at the level of an operation" narrates the connection; two
+  plain statements let the reader make it. Watch for because, so, since, therefore, which
+  means, and that is what.
+- Summarizing what was just described. If a paragraph explains the mechanism, it doesn't
+  need a closing sentence naming what the mechanism achieves.
+- Narrative setup. Don't walk the reader from the problem to the solution: "Within a
+  service, a call names a function. Between services there is no symbol to resolve. The
+  caller builds a URL…" is a story nobody asked for. State what the system does.
+- Essayistic observations. "A topic name alone is rarely enough", "what matters as much
+  as the list". Say what is extracted and what is matched.
+- Reassurance and permission. Don't tell the reader how much to trust a section, or that
+  they don't need to read it. State the scope of the page and move on.
 
 ### Content
 
@@ -77,14 +114,32 @@ These read as machine-written. Rewrite as a plain statement.
 - A positioning sentence names the category and the concrete capabilities together.
 - Prefer an example to a characterization. Name real endpoints, tables, and topics.
 - State limits. Distinguish what is parsed exactly (routes, cross-service calls, data
-  access) from what is proposed heuristically (service boundaries, business entities).
-- Document just enough for the reader to succeed.
+  access) from what is inferred (service boundaries, business entities, counterparty
+  names). Don't call inferred values "proposed": the model uses them as they are, and
+  curation corrects them when they are wrong. Nothing waits for the reader's approval.
+- Document just enough for the reader to succeed. Gateway prefixes, query-string
+  handling, and tie-breaking rules are implementation detail. An accordion is for detail
+  some readers need, not a place to put detail that didn't earn a place on the page.
 - Check for a keyword repeating across adjacent sentences. Reach for the specific word:
   edit, rename, migration, rather than "change" four times.
-- Compare against distributed tracing, not against static analysis. Lightbase is a
-  static analyzer, so "unlike static analysis tools" disowns our own approach. Tracing
-  shows which services called each other in the observed window. Lightbase reports
-  the paths present in the code, attached to the business operations that trigger them.
+- Don't build a page around a comparison. State what Lightbase does; a page that keeps
+  score against another tool invites the reader to judge us on that tool's home ground.
+- When a comparison does earn its place, compare against distributed tracing, not against
+  static analysis. Lightbase is a static analyzer, so "unlike static analysis tools"
+  disowns our own approach. Tracing shows which services called each other in the observed
+  window. Lightbase reports the paths present in the code, attached to the business
+  operations that trigger them.
+- Against code search and navigation tools, the difference is the boundary. Symbol
+  resolution stops at the process edge. A Lightbase flow continues across an HTTP call,
+  a queue topic, or a function invocation, into the code that handles it.
+
+## Product framing
+
+- Indexing is one process. Per-repository analysis and cross-repository resolution are
+  never presented as separate steps the reader schedules or thinks about.
+- Indexing runs daily by default; on every commit is available on request. Not a tier,
+  not a different mechanism.
+- Database analysis and counterparty resolution are documented as current behavior.
 
 ## Page types
 
@@ -184,6 +239,22 @@ documentation from other SaaS products we can use as inspiration are:
 - https://www.tinybird.co/docs/forward/quickstarts
 - https://www.sketch.com/docs/getting-started/
 - https://docs.carto.com/carto-for-agents/carto-for-agents
+
+For the `architecture/*` pages, which document internals rather than usage:
+
+- https://docs.cockroachlabs.com/docs/stable/architecture/overview — layered explanation
+  with overview and component tiers so the reader picks their depth. Take the structure,
+  not the habit of opening a section with motivation
+- https://sourcegraph.com/docs/code-search/code-navigation — precise versus search-based
+  navigation as the spine of the page, which is our exact versus proposed distinction
+- https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql
+  — names the languages it does not support, which is what makes the coverage claim credible
+- https://neon.com/docs/introduction/architecture-overview — one diagram per data path and
+  a table mapping user-facing concepts to the internals behind them
+- https://docs.temporal.io/temporal — short paragraphs, terms defined at first use, the
+  same idea restated with growing precision
+- https://docs.datadoghq.com/tracing/services/services_map/ — the incumbent view of a
+  service map, and candid about its own limits (sampling, 30-day ageing, complete traces)
 
 Think hard to build a good flowing documentation, walking the user through the product
 in an intuitive way, with an easy to follow, natural language aimed at a technical

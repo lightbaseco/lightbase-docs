@@ -1,51 +1,143 @@
 ---
 title: "Infrastructure support"
 description: "How Lightbase connects to your infrastructure and maps it alongside your code."
-tag: "In development"
 ---
 
-Infrastructure support is optional. Connect your infrastructure and Lightbase gains a fuller picture of your system: it picks up resource names that never appear in your code, uses them to infer relationships between components, and links your applications to the infrastructure they actually run on. It also improves how Lightbase answers questions in chat about your infrastructure.
+<Note>Infrastructure support is optional.</Note>
+<Note>
+  This feature is in development.
+  Reach out to your Lightbase contact to have it enabled for evaluation.
+</Note>
 
-## AWS
+Lightbase can index your cloud infrastructure, adding it to the context it already has about your organization. It improves how Lightbase answers questions in chat about your infrastructure. For example:
 
-### Connecting your account
+- It improves the connections between components that Lightbase finds.
+- It relates code and applications to the infrastructure they run on, for example knowing that an application is instantiated on a specific instance or pod. That context makes it possible to trace application failures back to their infrastructure cause, such as scaling limits, permissions, or the gateway.
+- It resolves connections more precisely, including ones that were previously only visible as environment variables.
+- It detects permission problems, such as a user or role that doesn't have enough permission, for example to read or write to a storage bucket.
 
-To analyze your infrastructure, Lightbase needs read-only visibility into your AWS account. You grant access by creating a dedicated IAM role that trusts Lightbase, scoped to an external ID unique to your organization — the standard AWS pattern for third-party account access, which also stops anyone else from assuming that role on your behalf.
+## Cloud providers
+
+<Note>
+  Lightbase currently supports AWS. Support for additional cloud providers is planned.
+</Note>
+
+### AWS
+
+#### Connecting your account
+
+To analyze your infrastructure, Lightbase needs read-only visibility into your AWS account. You grant access through an AWS CloudFormation stack. Lightbase gives you a direct link to the stack's review page in the AWS console, with the template and its parameters already filled in, so there's nothing to download or upload yourself.
+
+There are two ways to connect, depending on whether you use AWS Organizations:
+
+- **Organization account**: connect your organization's management account, then choose which member accounts to grant access to.
+- **Individual account**: connect a single AWS account. Use this if you don't use AWS Organizations, or only want to give Lightbase access to one account.
+
+<Tabs>
+  <Tab title="Organization account">
+    <Steps>
+      <Step title="Create IAM resources">
+        Sign in to your organization's management account, then open the setup link Lightbase gives you. It takes you straight to AWS CloudFormation's Quick create stack page, with the template and its parameters already filled in, for example:
+
+        ```text
+        Stack name: LightbaseAccess
+        LightbaseTenantRoleArn: arn:aws:iam::123456789012:role/lightbase-scanner-role
+        ExternalId: aB3dE7fG9hJ2kL4mN6pQ8rS1t
+        ```
+
+        These are example values: use the ones pre-filled by your own setup link, not the ones shown here. Review them without changing them, acknowledge that the stack creates IAM resources with custom names, and create it. This creates a dedicated IAM role, `LightbaseOrgDiscovery`, trusted only by Lightbase and scoped to read-only access.
+
+        Where in AWS: [CloudFormation stacks](https://console.aws.amazon.com/cloudformation/home#/stacks)
+      </Step>
+      <Step title="Activate the connection">
+        Once the stack finishes, copy the role ARN from its outputs and share it with your Lightbase contact to activate the connection.
+      </Step>
+      <Step title="Grant access to member accounts">
+        Deploy the second template Lightbase gives you as a CloudFormation StackSet from the management account. Unlike the first stack, this one isn't a single pre-filled link: create a new StackSet using the template Lightbase gives you, and enter its parameters, for example:
+
+        ```text
+        LightbaseTenantRoleArn: arn:aws:iam::123456789012:role/lightbase-scanner-role
+        ExternalId: aB3dE7fG9hJ2kL4mN6pQ8rS1t
+        ```
+
+        These are example values: use the ones Lightbase gives you, not the ones shown here. Name the StackSet yourself, then choose which accounts to target: your whole organization, specific organizational units, or individual accounts.
+
+        Where in AWS: [CloudFormation StackSets](https://console.aws.amazon.com/cloudformation/home#/stacksets)
+      </Step>
+    </Steps>
+
+  </Tab>
+  <Tab title="Individual account">
+    <Steps>
+      <Step title="Create IAM resources">
+        Open the setup link Lightbase gives you. It takes you straight to AWS CloudFormation's Quick create stack page, with the template and its parameters already filled in, for example:
+
+        ```text
+        Stack name: LightbaseAccess
+        LightbaseTenantRoleArn: arn:aws:iam::123456789012:role/lightbase-scanner-role
+        ExternalId: aB3dE7fG9hJ2kL4mN6pQ8rS1t
+        ```
+
+        These are example values: use the ones pre-filled by your own setup link, not the ones shown here. Review them without changing them, acknowledge that the stack creates IAM resources with custom names, and create it. This creates a dedicated IAM role, `LightbaseAccountDiscovery`, trusted only by Lightbase and scoped to read-only access.
+
+        Where in AWS: [CloudFormation stacks](https://console.aws.amazon.com/cloudformation/home#/stacks)
+      </Step>
+      <Step title="Activate the connection">
+        Once the stack finishes, copy the role ARN from its outputs and share it with your Lightbase contact to activate the connection.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 <Info>
-  Permissions are strictly read-only. Lightbase only ever calls `Describe`, `List`, and `Get` operations, and never creates, modifies, or deletes anything in your account. For AWS Secrets Manager specifically, Lightbase reads metadata such as name and rotation configuration — never the secret value itself.
+  Permissions are strictly read-only. Lightbase only ever calls `Describe`, `List`, and `Get` operations, and never creates, modifies, or deletes anything in your account. For AWS Secrets Manager specifically, Lightbase reads metadata such as name and rotation configuration, never the secret value itself.
 </Info>
 
-If your AWS account belongs to an AWS Organization, Lightbase can also discover its member accounts, giving you a unified infrastructure picture across your whole organization instead of connecting every account one by one.
-
-### What Lightbase discovers
+#### What Lightbase discovers
 
 Lightbase catalogs your AWS resources by service:
 
-| Service | Resources |
-|---|---|
-| Compute (EC2) | Instances, volumes, network interfaces |
-| Networking | VPCs, subnets, route tables, network ACLs, internet/NAT gateways, VPC endpoints, elastic IPs |
-| Load balancing | Load balancers (ALB/NLB/Gateway) and target groups |
-| Auto Scaling | Auto Scaling groups |
-| Storage | S3 buckets |
-| Serverless | Lambda functions |
-| Databases | DynamoDB tables |
-| Messaging | SQS queues |
-| Identity and access (IAM) | Users, roles, and groups |
-| Secrets | Secrets Manager entries (metadata only) |
-| Content delivery | CloudFront distributions |
-| DNS and domains | Route 53 hosted zones and registered domains |
-| APIs | API Gateway REST and HTTP APIs |
-| Global networking | Global Accelerator accelerators |
-
-### How resources connect
-
-Beyond listing resources, Lightbase maps how they relate to each other.
-
-- **Network relationships** — which VPC and subnet a resource sits in, which security groups protect it, and which load balancer routes to which targets.
-- **Access relationships** — parses IAM policies, both inline and attached, to work out which roles and users can reach which resources and assume which roles.
-
-<Warning>
-  Lightbase also identifies users, roles, and groups whose policies grant full administrator access — any statement allowing `Action: "*"` over `Resource: "*"` — so you can find them when you query your infrastructure.
-</Warning>
+<AccordionGroup>
+  <Accordion title="Compute (EC2)">
+    Instances, volumes, and network interfaces.
+  </Accordion>
+  <Accordion title="Networking">
+    VPCs, subnets, route tables, network ACLs, internet and NAT gateways, VPC endpoints, and elastic IPs.
+  </Accordion>
+  <Accordion title="Load balancing">
+    Load balancers (ALB, NLB, and Gateway) and target groups.
+  </Accordion>
+  <Accordion title="Auto Scaling">
+    Auto Scaling groups.
+  </Accordion>
+  <Accordion title="Storage">
+    S3 buckets.
+  </Accordion>
+  <Accordion title="Serverless">
+    Lambda functions.
+  </Accordion>
+  <Accordion title="Databases">
+    DynamoDB tables.
+  </Accordion>
+  <Accordion title="Messaging">
+    SQS queues.
+  </Accordion>
+  <Accordion title="Identity and access (IAM)">
+    Users, roles, and groups.
+  </Accordion>
+  <Accordion title="Secrets">
+    Secrets Manager entries, metadata only.
+  </Accordion>
+  <Accordion title="Content delivery">
+    CloudFront distributions.
+  </Accordion>
+  <Accordion title="DNS and domains">
+    Route 53 hosted zones and registered domains.
+  </Accordion>
+  <Accordion title="APIs">
+    API Gateway REST and HTTP APIs.
+  </Accordion>
+  <Accordion title="Global networking">
+    Global Accelerator accelerators.
+  </Accordion>
+</AccordionGroup>

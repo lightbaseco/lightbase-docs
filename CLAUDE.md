@@ -21,7 +21,9 @@
 
 One term per concept. Check an existing page before introducing a new one.
 
-- **application**, not service. Applications are what Lightbase detects and groups
+- **service** for a deployable unit of the system. Lightbase's own features are named
+  after applications (application detection, application groups), so use "application"
+  only on the pages that document those surfaces
 - **model**, not map, graph, or representation, for what Lightbase builds
 - **code flow**, not trace or path, for one execution path through the system
 - **entrypoint** for the HTTP route, queue consumer, or CLI command that starts a flow
@@ -63,7 +65,7 @@ These read as machine-written. Rewrite as a plain statement.
 - Commentary on your own writing. "worth stating plainly", "which matters more than it
   sounds", "it's worth noting that".
 - Vague personification. "work nobody flagged", "changes the team didn't catch".
-  Name the mechanism: "Projects start with an incomplete list of the applications they
+  Name the mechanism: "Projects start with an incomplete list of the services they
   need to touch."
 - Triads for rhythm. "faster, safer, and more predictable."
 - Filler and self-praise. "simply", "just", "seamless", "powerful", "robust".
@@ -74,15 +76,14 @@ These read as machine-written. Rewrite as a plain statement.
 - Open with the reader's problem in concrete terms, then what Lightbase does about it.
 - A positioning sentence names the category and the concrete capabilities together.
 - Prefer an example to a characterization. Name real endpoints, tables, and topics.
-- State limits. Distinguish what is parsed exactly (routes, cross-application calls,
-  data access) from what is proposed heuristically (application boundaries, business
-  entities).
+- State limits. Distinguish what is parsed exactly (routes, cross-service calls, data
+  access) from what is proposed heuristically (service boundaries, business entities).
 - Document just enough for the reader to succeed.
 - Check for a keyword repeating across adjacent sentences. Reach for the specific word:
   edit, rename, migration, rather than "change" four times.
 - Compare against distributed tracing, not against static analysis. Lightbase is a
   static analyzer, so "unlike static analysis tools" disowns our own approach. Tracing
-  shows which applications called each other in the observed window. Lightbase reports
+  shows which services called each other in the observed window. Lightbase reports
   the paths present in the code, attached to the business operations that trigger them.
 
 ## Page types

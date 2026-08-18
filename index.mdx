@@ -4,31 +4,34 @@ description: "Lightbase is the code intelligence layer that helps engineers and 
 keywords: ["code intelligence", "blast radius", "impact analysis", "data lineage", "microservices"]
 ---
 
-Real production codebases span hundreds or thousands of applications, with interdependencies that are difficult to anticipate. Projects start with an incomplete list of the applications they need to touch, and an edit to one breaks another downstream.
+Real production codebases span hundreds or thousands of services, with interdependencies that are difficult to anticipate. Projects start with an incomplete list of the services they need to touch, and an edit to one breaks another downstream.
 
-Lightbase is the code intelligence layer for large codebases, built on a model of every application, endpoint, call between applications, and the data they share. It indexes your repositories and traces each code flow from the entrypoint that starts it to the databases, queues, and external providers it reaches.
+Lightbase is the code intelligence layer for large codebases, built on a model of every service, endpoint, call between services, and the data they share. It indexes your repositories and traces each code flow from the entrypoint that starts it to the databases, queues, and external providers it reaches.
 
-You explore that model to see the blast radius of a change before designing it, and your agents query it through the MCP server to resolve dependencies in repositories outside the one they are working in.
+You explore that model while designing new functionality, and your agents reach the same model through the MCP server.
+
+<Columns cols={2}>
+  <Card title="Design projects that span services" icon="diagram-project">
+    Everything the work touches is visible before you commit to a design.
+  </Card>
+  <Card title="Ship with confidence" icon="shield-halved">
+    Anticipate which downstream services a change will affect.
+  </Card>
+  <Card title="Gain visibility into external providers" icon="plug">
+    See the data shared with them and the business flows behind each call.
+  </Card>
+  <Card title="Reduce the MTTR of production incidents" icon="gauge-high">
+    Root cause analysis is faster and more complete.
+  </Card>
+</Columns>
 
 <div className="lb-flow">
-  <Frame caption="A code flow traced across application boundaries.">
-    <img src="/images/flow.png" alt="A Lightbase code flow showing upstream callers in two applications, an HTTP entrypoint, and the functions it calls downstream" />
+  <Frame caption="A code flow traced across service boundaries.">
+    <img src="/images/flow.png" alt="A Lightbase code flow showing upstream callers in two services, an HTTP entrypoint, and the functions it calls downstream" />
   </Frame>
 </div>
 
-## Next steps
-
-<Columns cols={3}>
-  <Card title="Run your first index" icon="rocket" href="/getting-started/installation" horizontal>
-    Connect your source control provider and index your repositories.
-  </Card>
-  <Card title="See what gets extracted" icon="sitemap" href="/architecture/indexing-process" horizontal>
-    Entrypoints, cross-application calls, data access, and counterparties.
-  </Card>
-  <Card title="Connect the MCP server" icon="plug" href="/mcp/overview" horizontal>
-    Give your agents architecture-level context on your codebase.
-  </Card>
-</Columns>
+To get started, [connect your source control provider and run your first index](/getting-started/installation).
 
 {/* Decorative background, positioned from the top of the page by style.css.
     Kept last so it does not affect the spacing of the content above.

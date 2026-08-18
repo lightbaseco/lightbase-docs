@@ -1,10 +1,22 @@
 ---
 title: "MCP server"
-description: "Give your coding agent full context of your system through the Lightbase MCP server."
-tag: "In development"
+description: "Give your agent full context of your system through the Lightbase MCP server."
 ---
 
-The Lightbase MCP server gives AI agents direct access to the model of your system that Lightbase builds — how your applications call each other, the resources they share, and the flows that connect them. It implements the Model Context Protocol standard for exposing tools and context to agents. Use it when your agent needs context beyond the current repository: who calls a use case, what a change affects downstream, or how two services are connected.
+Your agent works with the context of the repository you have open. However, Lightbase has indexed every repository in your organization and built one model of your system. That model holds every relationship between your services, [databases](/data-curation/databases), [business entities](/data-curation/business-entities), and [counterparties](/data-curation/counterparties).
+
+To give your agent that context, Lightbase exposes an MCP server. You keep describing your task to your agent the way you do now. The agent decides when the open repository doesn't hold the answer and calls Lightbase. It gets that context back and keeps working.
+
+Some examples of when your agent could call Lightbase:
+
+- If your agent needs the purpose behind the code it's reading, it can call Lightbase for the context the file doesn't hold. That adds the use case the code belongs to, the code flow it's part of, who calls into it, and the outputs it produces. Your agent keeps working without altering what that code is there to do.
+- If your agent is about to change a resource other services share, it can call Lightbase first. The resource might be a bucket, an SQS queue, or the response shape of an HTTP handler, among others. Lightbase returns every other service that reads or writes it, so your agent can tell you which contracts the edit would break.
+- If your agent is debugging an error whose cause sits outside the repository, it can call Lightbase for the causes it can't see. For example: a role missing a permission, a security group blocking the connection, or an upstream service that changed its response shape. Lightbase points at the one that fits, so your agent applies the right fix.
+- If your agent needs the infrastructure behind the code it reads, it can call Lightbase for the answer. For example: the role a function runs under, the queue a producer writes to, or the domain in front of a route.
+
+<Info>
+  Roles, security groups, and domains come from your cloud account. [Connect your infrastructure](/architecture/infrastructure) to get them in the answer.
+</Info>
 
 ## Before you start
 
@@ -20,10 +32,6 @@ Every MCP client connects to the same Lightbase endpoint:
 ```
 https://mcp.lightbase.co
 ```
-
-<Info>
-  You don't generate or pass a token. The server authenticates each call directly, and your first connection opens a browser window to sign in with your Lightbase account.
-</Info>
 
 Add the endpoint to your client's configuration. The exact format depends on the client:
 
@@ -84,19 +92,47 @@ Add the endpoint to your client's configuration. The exact format depends on the
 
 Any other MCP-compatible editor or agent uses the same server URL. Check its own MCP documentation for the exact configuration format.
 
+### Multiple organizations
+
+Your client works with one organization at a time. If you belong to more than one Lightbase organization, add the `org` parameter to the server URL:
+
+```
+https://mcp.lightbase.co?org=acme
+```
+
+Set it to the organization's slug, the short identifier chosen when it was created. Without the parameter, Lightbase answers from your default organization.
+
+## Authentication
+
+The MCP server authenticates with OAuth 2.1. Your client registers itself through Dynamic Client Registration, a standard that lets a client enroll with an authorization server on its own.
+
+The first time your client connects, a browser window opens. Sign in with the account you already use for Lightbase.
+
+No API key means there is no long-lived secret stored in a configuration file. Each request is attributed to the person who signed in, and access ends when they leave your Lightbase organization.
+
 ## Available tools
 
-| Tool | Description |
-|---|---|
-| `query` | Ask questions that need context beyond the current repository — cross-service calls, downstream impact, or how applications connect to each other. |
+Lightbase currently exposes a single tool, `query`, which gives your agent all the context described above.
 
-## Query
+### Query
 
-`query` gives your agent context far beyond what it can see in the current repository. Lightbase tracks how your whole system behaves — not just one application, but how applications work together. It can tell your agent:
+<ParamField path="question" type="string" required>
+  The question you want your agent to answer.
+</ParamField>
 
-- Who calls into a given use case, and what that use case calls in turn.
-- Whether a change ripples out to other microservices or external counterparties.
-- The consequences of a change beyond the code itself.
-- How shared resources — databases, message topics, queues — connect different applications.
+<ParamField path="application_name" type="string">
+  The application your question relates to, if you already know it.
+</ParamField>
 
-`query` accepts two optional parameters to focus its answer: the file your question relates to, and the name of the function that best represents the behavior you're asking about.
+<ParamField path="file_path" type="string">
+  The file your question relates to, if you already know it.
+</ParamField>
+
+<ParamField path="function_name" type="string">
+  The name of the function your question is about, if you already know it.
+</ParamField>
+
+<Columns cols={2}>
+  <Card title="Connect your infrastructure" icon="cloud" href="/architecture/infrastructure" horizontal arrow />
+  <Card title="Curate your data model" icon="sliders" href="/data-curation/overview" horizontal arrow />
+</Columns>

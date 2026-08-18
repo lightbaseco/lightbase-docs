@@ -1,33 +1,37 @@
 ---
 title: "Introduction"
-description: "Lightbase indexes your codebase and traces business flows end-to-end across every service."
+description: "Lightbase is the code intelligence layer that helps engineers and agents navigate large codebases."
+keywords: ["code intelligence", "blast radius", "impact analysis", "data lineage", "microservices"]
 ---
 
-Lightbase connects to your source control, indexes your repositories, and builds a map of what your software actually does. Instead of stopping at the boundary of a single file or service, Lightbase follows your business flows from their entrypoints all the way to the databases, queues, and external services they touch.
+Real production codebases span hundreds or thousands of applications, with interdependencies that are difficult to anticipate. Projects start with an incomplete list of the applications they need to touch, and an edit to one breaks another downstream.
 
-## Why Lightbase is different
+Lightbase is the code intelligence layer for large codebases, built on a model of every application, endpoint, call between applications, and the data they share. It indexes your repositories and traces each code flow from the entrypoint that starts it to the databases, queues, and external providers it reaches.
 
-Unlike static analysis tools that reason about one service in isolation, Lightbase traces business flows **end-to-end**, even when a single flow spans multiple services through network calls, message queues, and other asynchronous boundaries. This lets Lightbase link external service calls and database access back to the concrete business flows that trigger them, giving you a picture of your system that matches how it really behaves in production.
+You explore that model to see the blast radius of a change before designing it, and your agents query it through the MCP server to resolve dependencies in repositories outside the one they are working in.
 
-## What you can do with Lightbase
+<div className="lb-flow">
+  <Frame caption="A code flow traced across application boundaries.">
+    <img src="/images/flow.png" alt="A Lightbase code flow showing upstream callers in two applications, an HTTP entrypoint, and the functions it calls downstream" />
+  </Frame>
+</div>
 
-<CardGroup cols={2}>
-  <Card title="Understand your architecture" icon="sitemap" href="/architecture/indexing-process">
-    See how Lightbase detects languages, frameworks, entrypoints, and the external systems your code interacts with.
+## Next steps
+
+<Columns cols={3}>
+  <Card title="Run your first index" icon="rocket" href="/getting-started/installation" horizontal>
+    Connect your source control provider and index your repositories.
   </Card>
-  <Card title="Query with the MCP server" icon="comments" href="/mcp/overview">
-    Chat with your codebase, compute blast radius, and trace data lineage through the Lightbase MCP server.
+  <Card title="See what gets extracted" icon="sitemap" href="/architecture/indexing-process" horizontal>
+    Entrypoints, cross-application calls, data access, and counterparties.
   </Card>
-  <Card title="Curate your data" icon="pen-to-square" href="/data-curation/overview">
-    Refine the model of your system — databases, business entities, counterparties, and applications.
+  <Card title="Connect the MCP server" icon="plug" href="/mcp/overview" horizontal>
+    Give your agents architecture-level context on your codebase.
   </Card>
-  <Card title="Review security" icon="shield-halved" href="/security/analysis-processing">
-    Learn how your code is analyzed and stored, from sandboxed processing to per-customer encryption keys.
-  </Card>
-</CardGroup>
+</Columns>
 
-## Get started
-
-<Card title="Install Lightbase" icon="rocket" href="/getting-started/installation">
-  Connect your source control provider, choose which repositories to index, and run your first analysis.
-</Card>
+{/* Decorative background, positioned from the top of the page by style.css.
+    Kept last so it does not affect the spacing of the content above.
+    It has to be an <img> rather than a CSS background: Mintlify rewrites image
+    paths found in MDX to its CDN, and a url() in a stylesheet is not rewritten. */}
+<img className="lb-hero-bg" src="/images/background-cutout.png" alt="" />

@@ -1,33 +1,46 @@
 ---
 title: "Data curation"
-description: "Refine the model Lightbase builds of your system."
+description: "Keep your codebase model abstraction up to date with your custom business semantics."
 ---
 
-<Note>
-  This page is a stub. It will explain what data curation is and why it matters.
-</Note>
+After [indexing](/architecture/indexing-process), Lightbase holds an inferred model of your code, your infrastructure, and your data. Data curation is the tool for manually editing that model, so it matches the way your company groups and names internal business concepts.
 
-## Why curation matters
+From there, both the diagrams Lightbase draws and the answers it gives use your naming and your structure.
 
-Explain the motivation for data curation and the role it plays in producing an accurate model of your system.
-
-## Curation during rollout
-
-Lightbase generally handles the initial curation for you during rollout. From then on, you can use these tools to edit anything Lightbase does not capture automatically.
-
-## What you can curate
+## Editable models
 
 <CardGroup cols={2}>
-  <Card title="Databases" icon="database" href="/data-curation/databases">
-    Manage databases and upload schema definitions.
+  <Card title="Databases and tables" icon="database" href="/data-curation/databases" arrow>
+    Declare your databases, review discovered tables, and refine schemas down to the column.
   </Card>
-  <Card title="Business entities" icon="cubes" href="/data-curation/business-entities">
-    Define the business entities that describe your domain.
+  <Card title="Business entities" icon="boxes" href="/data-curation/business-entities" arrow>
+    Group strongly related tables under the concepts your domain has words for.
   </Card>
-  <Card title="Counterparties" icon="handshake" href="/data-curation/counterparties">
-    Edit the external entities your system interacts with.
+  <Card title="Applications" icon="server" href="/data-curation/applications" arrow>
+    Name, group, configure, and scope the applications your model is built around.
   </Card>
-  <Card title="Applications" icon="grid-2" href="/data-curation/applications">
-    Manage applications, groups, and environments.
+  <Card title="Counterparties" icon="handshake" href="/data-curation/counterparties" arrow>
+    Organize the vendors, platforms, and partners your code reaches.
   </Card>
 </CardGroup>
+
+## What curation changes
+
+Diagrams, chat answers, blast radius, and [data lineage](/mcp/data-lineage) all read from the same model, so an edit here shows up in every one of them.
+
+| Inferred by indexing                                           | After you curate it                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------ |
+| `cust`, `customers`, and `tbl_client` in three services        | One table, with each service's columns mapped to it     |
+| A users table and the six normalized tables around it          | A single `Users` business entity                        |
+| An application named after the repository it was found in      | The service name your team uses, inside its own group   |
+| Three endpoints reaching the same vendor                       | One counterparty group                                  |
+
+## Automatic code updates
+
+Manual edits always take precedence over inference. Nothing you curate is overwritten by a later analysis.
+
+When new code arrives — a new table, a new service, a new external call — Lightbase integrates it into the model with its best guess and flags it for review, so a human can confirm the guess or replace it. Newly discovered tables collect in **Tables pending assignment**, and you always know what has arrived since you last looked.
+
+<Info>
+  Everything you curate is internally marked as curated, so your semantics are always distinguishable from what Lightbase inferred.
+</Info>

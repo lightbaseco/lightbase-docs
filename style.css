@@ -1,0 +1,85 @@
+/* Intro page background.
+   Scoped to the classes used on index.mdx, so it does not affect other pages. */
+
+/* How far the background bleeds past the content column towards the page edge. */
+:root {
+  --lb-bleed: 16rem;
+}
+
+/* The bleed would otherwise widen the document and add a horizontal scrollbar.
+   `clip` prevents that without creating a scroll container. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Establishes the stacking context the background sits behind, so the decoration
+   can drop below the text without needing a wrapper around the content. */
+main {
+  position: relative;
+  z-index: 0;
+}
+
+.lb-hero-bg {
+  position: absolute;
+  top: 0;
+  right: calc(-1 * var(--lb-bleed));
+
+  /* Source is 1339px wide, so 669px renders 1:1 on a 2x display. Raising this
+     past 669px starts upscaling and the dots go soft. */
+  width: min(46vw, 669px);
+  height: auto;
+  max-width: none;
+
+  transform: translateY(-4%);
+  opacity: 1;
+
+  /* Deepens the dot colours without touching the source image.
+     saturate() alone flattens the darker points, so a little contrast with it. */
+  filter: saturate(1.6) contrast(1.08);
+
+  pointer-events: none;
+  z-index: -1;
+
+  /* Densest at the right edge, thinning out as it approaches the text,
+     and fading away towards the bottom. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%),
+    linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 38%,
+      rgba(0, 0, 0, 0.12) 52%,
+      rgba(0, 0, 0, 0.45) 66%,
+      rgba(0, 0, 0, 0.82) 79%,
+      #000 88%
+    );
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%),
+    linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 38%,
+      rgba(0, 0, 0, 0.12) 52%,
+      rgba(0, 0, 0, 0.45) 66%,
+      rgba(0, 0, 0, 0.82) 79%,
+      #000 88%
+    );
+  mask-composite: intersect;
+}
+
+.dark .lb-hero-bg {
+  opacity: 0.75;
+}
+
+/* Space around the flow diagram. */
+.lb-flow {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+/* Below this width the background crowds the text. */
+@media (max-width: 1024px) {
+  .lb-hero-bg {
+    display: none;
+  }
+}

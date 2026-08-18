@@ -1,36 +1,19 @@
 ---
 title: "Database curation"
-description: "Declare the databases you really run, and turn tables observed in code into a schema you trust."
+description: "Manage your databases, review discovered tables, and refine schemas down to the column."
 ---
 
-**Database Curation** is where your data layer gets its semantics. You declare the databases you run, mark replicas, review every table [indexing](/architecture/indexing-process) found in your code, merge the variants that different services read, and edit schemas down to the column.
+Code is a partial description of a data layer. Applications reach databases through aliases and environment variables that are private, columns no query touches doesn't appear at all in code, ... **Database Curation** is where our model gets full visibility of the structure of the data. 
 
-Code is a partial description of a data layer. Applications reach databases through aliases and environment variables, the same physical table is spelled differently in every service that reads it, relationships live in application logic rather than in constraints, and columns no query touches never appear at all. Curation is where you say what the data actually is.
+You can manage the databases you run, mark replicas, review every table [indexing](/architecture/indexing-process) found in your code, merge them if there are any duplicates, and edit schemas down to the column.
 
-## Declare your databases
+## Manage your databases
 
-Create the databases that matter and describe them in the terms your team uses.
+Define the databases that matter and describe them in the terms your team uses.
 
 * **Name, alias, and engine.** The logical name your applications use, alongside the real one.
 * **Host and description.** Enough context that anyone reading a lineage trace knows which system it is.
 * **Replication.** Mark a database as a replica of another, so reads against the replica trace back to the same data as the primary.
-
-Detected metadata stays visible next to your edits: the repository and commit the database was found in, the [applications](/data-curation/applications) that reach it, and how confident the detection was.
-
-## Review the tables Lightbase found
-
-Every table discovered in your code lands in **Tables pending assignment**, ordered by the application it was found in. Two actions clear the queue.
-
-<Tabs>
-  <Tab title="Accept a table">
-    Confirm a table's name and columns and it joins your curated schema, unchanged. This is the everyday action, and it is the whole review for tables that only one service reads.
-  </Tab>
-  <Tab title="Combine several tables">
-    When three services read the same physical table under three different names, merge them into a single curated table that replaces the originals. You choose the name, the columns, and how each service's columns map onto them.
-  </Tab>
-</Tabs>
-
-Lightbase keeps the provenance either way: which application called the table what, and which of its columns maps to which curated field. A question asked in your vocabulary still resolves to the exact code that touches the data.
 
 ## Refine down to the column
 
@@ -38,7 +21,7 @@ A curated table is editable at field level, which is where most of the value sit
 
 * Column **names and types**, plus **primary key** and **nullable** flags.
 * **Foreign keys** pointing at other curated tables, so relationships survive even when the database never declared them.
-* A **category** per column and as many **categories** as you need per table — free-text tags such as `pii` or `financial` that then follow the data through every flow that reads it.
+* A **category** per column and as many **categories** as you need per table — free-text tags such as `sensitive` or `financial` that then follow the data through every flow that reads it.
 * The **column mapping** per application, so a rename in one service does not sever the link to the rest.
 
 ## Upload a DDL
@@ -48,31 +31,3 @@ Upload the DDL of a database and Lightbase reconciles it with what it observed i
 <Tip>
   A DDL is the fastest way to curate a large, mature schema. Lightbase fills in the structure; you spend your time on naming and business meaning.
 </Tip>
-
-## What you control
-
-| Object | You curate                                                                                 | Lightbase provides                                                    |
-| ------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Database | Name, alias, engine, host, description, replication                                      | Detection confidence, repository and commit, applications that use it |
-| Table  | Name, description, schema and collection, categories, parent database, business entity     | Original names observed per application                               |
-| Column | Name, type, primary key, nullable, foreign key target, category, per-application mapping   | Columns and types observed in code                                    |
-
-## What this unlocks
-
-A curated schema is what [blast radius](/mcp/blast-radius) and [data lineage](/mcp/data-lineage) read from.
-
-<CardGroup cols={3}>
-  <Card title="Exact impact analysis" icon="radar">
-    Change a schema and blast radius names every service, entrypoint, and queue affected.
-  </Card>
-  <Card title="Lineage to the column" icon="route">
-    Trace a single field from the entrypoint that writes it to every flow that reads it.
-  </Card>
-  <Card title="Sensitive data you can follow" icon="shield-check">
-    Tag a column once and every path carrying it becomes visible.
-  </Card>
-</CardGroup>
-
-<Card title="Group your tables into business entities" icon="boxes" href="/data-curation/business-entities" horizontal arrow>
-  With the schema curated, name the concepts it represents.
-</Card>

@@ -1,46 +1,34 @@
 ---
 title: "Data curation"
-description: "Keep your codebase model abstraction up to date with your custom business semantics."
+description: "Make Lightbase speak the same language as your company."
 ---
 
-After [indexing](/architecture/indexing-process), Lightbase holds an inferred model of your code, your infrastructure, and your data. Data curation is the tool for manually editing that model, so it matches the way your company groups and names internal business concepts.
-
-From there, both the diagrams Lightbase draws and the answers it gives use your naming and your structure.
+After [indexing](/architecture/indexing-process), Lightbase holds an inferred model of your code, your infrastructure, and your data. With a full understanding of the business concepts, connections and dependencies of the different flows of your system. Data curation is the tool for manually editing that model, so it matches the way your company groups and names internal business concepts, for the kind of knowledge that is not explicitly represented in the code but is of common use inside your team, like certain domain boundaries, internal business wording or custom grouping.
 
 ## Editable models
 
 <CardGroup cols={2}>
   <Card title="Databases and tables" icon="database" href="/data-curation/databases" arrow>
-    Declare your databases, review discovered tables, and refine schemas down to the column.
+    Manage your databases, review discovered tables, and refine schemas down to the column.
   </Card>
   <Card title="Business entities" icon="boxes" href="/data-curation/business-entities" arrow>
-    Group strongly related tables under the concepts your domain has words for.
+    Group tables that are part of the same business concept. (e.g. Customer, Report, etc.)
   </Card>
   <Card title="Applications" icon="server" href="/data-curation/applications" arrow>
-    Name, group, configure, and scope the applications your model is built around.
+    Manage and group the applications and services that make up your system.
   </Card>
   <Card title="Counterparties" icon="handshake" href="/data-curation/counterparties" arrow>
-    Organize the vendors, platforms, and partners your code reaches.
+    Organize the vendors, platforms, and partners your company interacts with.
   </Card>
 </CardGroup>
-
-## What curation changes
-
-Diagrams, chat answers, blast radius, and [data lineage](/mcp/data-lineage) all read from the same model, so an edit here shows up in every one of them.
-
-| Inferred by indexing                                           | After you curate it                                    |
-| -------------------------------------------------------------- | ------------------------------------------------------ |
-| `cust`, `customers`, and `tbl_client` in three services        | One table, with each service's columns mapped to it     |
-| A users table and the six normalized tables around it          | A single `Users` business entity                        |
-| An application named after the repository it was found in      | The service name your team uses, inside its own group   |
-| Three endpoints reaching the same vendor                       | One counterparty group                                  |
 
 ## Automatic code updates
 
 Manual edits always take precedence over inference. Nothing you curate is overwritten by a later analysis.
 
-When new code arrives — a new table, a new service, a new external call — Lightbase integrates it into the model with its best guess and flags it for review, so a human can confirm the guess or replace it. Newly discovered tables collect in **Tables pending assignment**, and you always know what has arrived since you last looked.
+When new code arrives — a new model, a new service, a new external call — Lightbase automatically integrates it into the existent model and flags
+it for review, so a human always has the last word on what the model says about your system.
 
 <Info>
-  Everything you curate is internally marked as curated, so your semantics are always distinguishable from what Lightbase inferred.
+  Everything you curate is internally marked, so your semantics are always distinguishable from what Lightbase inferred.
 </Info>

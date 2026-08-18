@@ -5,7 +5,7 @@ description: "Organize the vendors, platforms, and partners your company interac
 
 A **counterparty** is something outside your system that your code interacts with: a cloud service, a payment provider, a partner API, a SaaS tool you pay for. Lightbase detects them as it traces your flows and records what kind of interaction it found. In **Counterparties** you rename them, describe what each interaction is for, and organize them into the groups your company uses.
 
-Those groupings are commercial and organizational facts, not technical ones. Nothing in your code says that three buckets belong to one vendor contract, so this is where you say it.
+Names and groups are inferred. In curation you correct them: rename a counterparty, merge variants of the same one, and change the groups it belongs to.
 
 ## Counterparty groups
 
@@ -24,11 +24,11 @@ A counterparty can belong to several groups at once. A payments endpoint sits in
 
 ## What you can edit
 
-| Object             | You curate                                         | Lightbase provides                         |
-| ------------------ | -------------------------------------------------- | ------------------------------------------ |
-| Counterparty       | Name, description, group membership                | The interaction type found in code         |
-| Counterparty group | Name and kind, plus the business groups themselves | The technical groups, built from your code |
+| Object             | You curate                                       | Lightbase provides                                |
+| ------------------ | ------------------------------------------------ | ------------------------------------------------- |
+| Counterparty       | Name, description, group membership              | The interaction type found in code                |
+| Counterparty group | Name, kind, and which counterparties belong to it | The initial groups, inferred from calls and flows |
 
-<Card title="See how counterparties are detected" icon="plug" href="/architecture/external-interactions" horizontal arrow>
-  Counterparties come out of the external interactions Lightbase traces in your code.
+<Card title="See how counterparties are detected" icon="plug" href="/architecture/counterparties" horizontal arrow>
+  Counterparties come out of the interactions Lightbase traces in your code.
 </Card>

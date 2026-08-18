@@ -71,10 +71,15 @@ main {
   opacity: 0.75;
 }
 
-/* Space around the flow diagram. */
+/* Space around the flow diagram. It opens the page, so it carries no top
+   margin of its own and Mintlify's margin on the <Frame> is reset too. */
 .lb-flow {
-  margin-top: 3rem;
+  margin-top: 0;
   margin-bottom: 3rem;
+}
+
+.lb-flow > :first-child {
+  margin-top: 0;
 }
 
 /* Below this width the background crowds the text. */

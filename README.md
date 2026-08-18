@@ -1,55 +1,50 @@
-# Mintlify Starter Kit
+# Lightbase documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+The source for the Lightbase documentation site, built on [Mintlify](https://mintlify.com)
+and deployed to [onboarding.lightbase.co](https://onboarding.lightbase.co).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Local preview
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
-
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## AI-assisted writing
-
-Set up your AI coding tool to work with Mintlify:
+Install the Mintlify CLI and run it from the repository root, where `docs.json` lives:
 
 ```bash
-npx skills add https://mintlify.com/docs
-```
-
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
-
-See the [AI tools guides](/ai-tools) for tool-specific setup.
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
 npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+The preview runs at `http://localhost:3000`.
 
-## Publishing changes
+`mint dev` serves the repository straight from disk, so assets resolve differently than
+they do in production. Check anything image-related on the deployed site before
+considering it done.
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+## Publishing
 
-## Need help?
+Pushing to `main` deploys automatically through the Mintlify GitHub app.
 
-### Troubleshooting
+## Layout
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+| Path | Contents |
+| --- | --- |
+| `index.mdx` | Introduction page |
+| `getting-started/` | Installing Lightbase and indexing repositories |
+| `architecture/` | How the analysis works, and what it resolves |
+| `mcp/` | The MCP server and its tools |
+| `security/` | Analysis processing and code storage |
+| `data-curation/` | Refining the model Lightbase builds |
+| `docs.json` | Navigation, theme, logo, and navbar configuration |
+| `style.css` | Custom CSS, applied on every page |
+| `images/` | Screenshots and graphics, with their uncompressed sources |
+| `outline.md` | Working outline of the sections still to write |
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+## Writing
+
+`CLAUDE.md` holds the style guide: voice, sentence and paragraph rules, the
+constructions to avoid, which component belongs on which page type, and how to handle
+media. `AGENTS.md` points at the same file, so Claude Code, Cursor, and Codex all read
+one set of rules. Read it before adding a page.
+
+One rule worth knowing before you touch `style.css`: never reference a repo asset from
+`url()` in CSS. Mintlify rewrites image paths it finds in MDX to its CDN and does not
+rewrite `url()` inside a stylesheet, so those requests work locally and 403 in
+production. Put the image in the MDX as an `<img>` with a class and style it from CSS.

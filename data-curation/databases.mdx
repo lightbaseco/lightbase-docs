@@ -1,33 +1,33 @@
 ---
-title: "Database curation"
+title: "Databases and tables"
 description: "Manage your databases, review discovered tables, and refine schemas down to the column."
 ---
 
-Code is a partial description of a data layer. Applications reach databases through aliases and environment variables that are private, columns no query touches doesn't appear at all in code, ... **Database Curation** is where our model gets full visibility of the structure of the data. 
+Code describes only part of your data layer. Services reach databases through aliases and environment variables whose values never appear in the source. A column no query touches is invisible to indexing. In **Databases and tables** you fill those gaps.
 
-You can manage the databases you run, mark replicas, review every table [indexing](/architecture/indexing-process) found in your code, merge them if there are any duplicates, and edit schemas down to the column.
+You declare the databases you run and mark replicas. You review the tables Lightbase discovered while [indexing](/architecture/indexing-process), merge duplicates, and edit schemas down to the column.
 
 ## Manage your databases
 
 Define the databases that matter and describe them in the terms your team uses.
 
-* **Name, alias, and engine.** The logical name your applications use, alongside the real one.
-* **Host and description.** Enough context that anyone reading a lineage trace knows which system it is.
+* **Name, alias, and engine.** The logical name your services use, alongside the real one.
+* **Host and description.** Enough context that anyone following the data lineage knows which system it is.
 * **Replication.** Mark a database as a replica of another, so reads against the replica trace back to the same data as the primary.
 
 ## Refine down to the column
 
-A curated table is editable at field level, which is where most of the value sits.
+A curated table is editable at field level.
 
 * Column **names and types**, plus **primary key** and **nullable** flags.
 * **Foreign keys** pointing at other curated tables, so relationships survive even when the database never declared them.
-* A **category** per column and as many **categories** as you need per table — free-text tags such as `sensitive` or `financial` that then follow the data through every flow that reads it.
-* The **column mapping** per application, so a rename in one service does not sever the link to the rest.
+* A **category** per column, and as many **categories** as you need per table. Categories are free-text tags such as `sensitive` or `financial`. They follow the data through every flow that reads it.
+* The **column mapping** per service, so a rename in one place keeps the link to the rest.
 
 ## Upload a DDL
 
 Upload the DDL of a database and Lightbase reconciles it with what it observed in code. You get the columns no query ever referenced, real types, and the constraints the database enforces, merged into the tables you already curated.
 
 <Tip>
-  A DDL is the fastest way to curate a large, mature schema. Lightbase fills in the structure; you spend your time on naming and business meaning.
+  A DDL is the fastest way to curate a large, mature schema. Lightbase fills in the structure so you only curate naming and business meaning.
 </Tip>

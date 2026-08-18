@@ -1,23 +1,23 @@
 ---
 title: "Applications"
-description: "Manage and group the applications and services that make up your system."
+description: "Manage the applications detected in your code and group them by team or domain."
 ---
 
-**Applications** are every service, frontend application, set of scripts... from your codebase. 
+An **application** is a deployable unit from your codebase: a backend service, a frontend web app, or a set of scripts.
 
-[Detection](/architecture/application-detection) takes its names from repositories and manifests, which might be different from the way you internally call it. Through curation you can also group them by team, domain, technical stack...
+[Detection](/architecture/application-detection) names each application after its repository or manifest, which is often not the name your team uses. In curation you rename them and group them by team, domain, or stack.
 
 ## Application groups
 
-Group applications into the units you plan work around: a product, a domain, a platform, a team's surface area. Grouping lets Lightbase roll flows and impact up to that level, so a blast radius reports "three services in Payments" instead of listing nine repositories.
+Group applications into the units you plan work around: a product, a domain, a platform, a team's surface area. Lightbase then rolls flows and impact up to that level. A blast radius reports "three applications in Payments" instead of listing nine repositories.
 
 ## Environment variables
 
-Applications reach their databases and their peers through configuration, not hardcoded addresses. Supply the values behind those variables per environment and Lightbase resolves which [curated database](/data-curation/databases) or service endpoint a `DATABASE_URL` really points at. That is what turns an inferred connection into a confirmed one.
+Applications reach their databases and their peers through configuration. Supply the values behind those variables per environment. Lightbase then resolves which [curated database](/data-curation/databases) or application a `DATABASE_URL` points at, turning an inferred connection into a confirmed one.
 
 ## Enable and disable
 
-Disable an application to take it out of the model without changing what you index. It is the right move for a deprecated service, a folder of generated code, or a false positive from application detection.
+Disable an application to take it out of the model without changing what you index. Use it for a deprecated application, a folder of generated code, or a false positive from application detection.
 
 <Note>
   You can always reenable the application to start indexing it again.

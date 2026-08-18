@@ -5,26 +5,26 @@ description: "Make Lightbase speak the same language as your company."
 
 After [indexing](/architecture/indexing-process), Lightbase holds an inferred model of your code, your infrastructure, and your data. With a full understanding of the business concepts, connections and dependencies of the different flows of your system. Data curation is the tool for manually editing that model, so it matches the way your company groups and names internal business concepts, for the kind of knowledge that is not explicitly represented in the code but is of common use inside your team, like certain domain boundaries, internal business wording or custom grouping.
 
-## Editable models
+## What you can curate
 
 <CardGroup cols={2}>
   <Card title="Databases and tables" icon="database" href="/data-curation/databases" arrow>
     Manage your databases, review discovered tables, and refine schemas down to the column.
   </Card>
   <Card title="Business entities" icon="boxes" href="/data-curation/business-entities" arrow>
-    Group tables that are part of the same business concept. (e.g. Customer, Report, etc.)
+    Group the tables that hold one business concept, such as Customer or Report.
   </Card>
   <Card title="Applications" icon="server" href="/data-curation/applications" arrow>
-    Manage and group the applications and services that make up your system.
+    Manage the applications detected in your code and group them by team or domain.
   </Card>
   <Card title="Counterparties" icon="handshake" href="/data-curation/counterparties" arrow>
     Organize the vendors, platforms, and partners your company interacts with.
   </Card>
 </CardGroup>
 
-## Automatic code updates
+## What happens when your code changes
 
-Manual edits always take precedence over inference. Nothing you curate is overwritten by a later analysis.
+Manual edits take precedence over inference, so a later analysis never overwrites what you curate.
 
 When new code arrives — a new model, a new service, a new external call — Lightbase automatically integrates it into the existent model and flags
 it for review, so a human always has the last word on what the model says about your system.

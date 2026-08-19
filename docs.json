@@ -15,7 +15,6 @@
         "group": "Getting started",
         "pages": [
           "getting-started/quickstart",
-          "getting-started/source-providers",
           "getting-started/repositories"
         ]
       },
@@ -37,8 +36,7 @@
       {
         "group": "Security",
         "pages": [
-          "security/analysis-processing",
-          "security/code-storage"
+          "security/security-model"
         ]
       },
       {

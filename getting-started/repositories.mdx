@@ -30,7 +30,7 @@ When you **disable** a repository, Lightbase stops indexing it and it no longer 
 When you **enable** a repository again, Lightbase queues it as **Pending** and indexes it on the next sync.
 
 <Warning>
-  Disabling a repository deletes the analysis Lightbase has produced for it. Re-enabling indexes the repository from scratch. The previous analysis is not restored.
+  Disabling a repository deletes the analysis Lightbase has produced for it. Re-enabling indexes the repository from scratch. The previous data is not restored.
 </Warning>
 
 ## Repositories Lightbase doesn't index
@@ -47,7 +47,7 @@ Lightbase does not distinguish between public and private repositories. It index
 
 Lightbase periodically scans the repositories in your connected provider to keep your model up to date. On each scan it:
 
-- **Adds new repositories.** Repositories that have appeared in your provider are added and queued for indexing automatically. If you don't want new repositories included automatically, contact us and we'll disable this feature for you.
+- **Adds new repositories.** Repositories that have appeared in your provider are added and queued for indexing automatically. Repository discovery can be disabled, contact us.
 - **Removes deleted repositories.** Repositories that have been deleted or are no longer accessible are removed from Lightbase, along with the analysis produced for them.
 - **Detects new commits.** Lightbase checks each repository's default branch for new commits since the last index. When it finds new commits, it triggers a fresh indexing run so your model reflects the latest code.
 
@@ -57,7 +57,7 @@ Lightbase periodically scans the repositories in your connected provider to keep
   <Card title="How indexing works" icon="magnifying-glass-chart" href="/architecture/indexing-process">
     See what happens when Lightbase analyzes your code.
   </Card>
-  <Card title="Code storage" icon="shield-halved" href="/security/code-storage">
-    See how Lightbase encrypts and stores your code and analysis.
+  <Card title="Security model" icon="shield-halved" href="/security/security-model">
+    See how Lightbase secures your data at every step.
   </Card>
 </Columns>

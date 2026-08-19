@@ -16,36 +16,128 @@ You need:
 ## Set up Lightbase
 
 <Steps>
-  <Step title="Connect your source control provider">
-    Connect Lightbase to GitHub, GitLab, or Bitbucket. This authorizes Lightbase to read the repositories you choose. See [Source providers](/getting-started/source-providers) for the per-provider steps and requirements.
-  </Step>
-  <Step title="Select the repositories to index">
-    During the connection, you choose which repositories Lightbase indexes. The rest stay disabled and are excluded from analysis. You can change this selection at any time. See [Repository management](/getting-started/repositories) to edit it later.
-  </Step>
-  <Step title="Lightbase builds your model">
-    Lightbase indexes the selected repositories automatically to build the first version of your organization's model. You don't need to trigger anything. See [the indexing process](/architecture/indexing-process) for what happens during the initial index.
-  </Step>
-  <Step title="Connect the MCP server">
-    Give your AI client access to your model through the Lightbase MCP server. Point your client at:
+    <Step title="Connect your source control provider">
+        Connect Lightbase to GitHub, GitLab, or Bitbucket. This authorizes Lightbase to read the repositories you choose. Connecting a provider requires admin access in your Lightbase organization.
+        <Tabs>
+            <Tab title="GitHub">
+                To connect GitHub, start the GitHub connection flow in Lightbase and authorize the integration in GitHub. You can choose which organization to install the GitHub app in.
 
-    ```
-    https://mcp.lightbase.co
-    ```
+                <Note>
+                  Depending on how the GitHub organization is managed, an owner or admin may need to approve the installation before it becomes active. If that's not you, your request is sent to an owner for approval.
+                </Note>
 
-    The server authenticates the call directly, with no token to generate or pass. The first connection opens a browser window to sign in with your Lightbase account. See [MCP server](/mcp/overview) for per-client setup, including VS Code, Cursor, and Claude Code.
-  </Step>
-  <Step title="Curate your data (optional)">
-    Data curation aligns the inferred model with the names and structure your team uses. See [Data curation](/data-curation/overview) to learn what you can refine.
-  </Step>
+                Once the connection is approved, GitHub shows the repositories Lightbase will have access to. You can select all of them or choose a subset.
+
+                After the installation, the Lightbase GitHub App appears under the **GitHub Apps** section in your GitHub organization settings.
+            </Tab>
+            <Tab title="GitLab">
+                  To connect GitLab, authorize the integration in GitLab and then choose the top-level GitLab group you want Lightbase to use. Lightbase uses that group to discover the repositories available for selection, skipping any repository that is not in the group.
+
+                  The integration is linked to the personal account that authorizes it, not to the group selected. You can review or revoke it under **Authorized applications** in your GitLab account settings.
+
+                  <Tip>
+                      Create a dedicated account for the integration instead of using your personal one, so more people can access it if necessary.
+                  </Tip>
+            </Tab>
+            <Tab title="Bitbucket">
+                  To connect Bitbucket, authorize the integration in Bitbucket and then choose the Bitbucket workspace you want Lightbase to use. Lightbase uses that workspace to discover the repositories available for selection, skipping any repository that is not in the workspace.
+
+                  The integration is linked to the personal account that authorizes it, not to the workspace or organization selected.
+
+                  <Tip>
+                      Create a dedicated account for the integration instead of using your personal one, so more people can access it if necessary.
+                  </Tip>
+            </Tab>
+        </Tabs>
+    </Step>
+    <Step title="Select the repositories to index">
+        During setup, you choose which repositories Lightbase indexes. The rest stay disabled and are excluded from analysis. You can change this selection at any time, see [Repository management](/getting-started/repositories).
+    </Step>
+    <Step title="Lightbase builds your model">
+        Lightbase indexes the selected repositories automatically to build the first version of your organization's model. You don't need to trigger anything. See [the indexing process](/architecture/indexing-process) for what happens during the initial index.
+    </Step>
+    <Step title="Connect the MCP server (optional)">
+        Give your AI client access to your model through the Lightbase MCP server. Point your client at:
+
+        ```
+        https://mcp.lightbase.co
+        ```
+
+        <Info>
+            You don't generate or pass a token. The server authenticates each call directly, and your first connection opens a browser window to sign in with your Lightbase account.
+        </Info>
+
+        Add the endpoint to your client's configuration. The exact format depends on the client:
+
+        <Tabs>
+            <Tab title="VS Code">
+                Add the server to `.vscode/mcp.json`:
+
+                ```json .vscode/mcp.json
+                {
+                    "servers": {
+                        "lightbase": {
+                            "url": "https://mcp.lightbase.co"
+                        }
+                    }
+                }
+                ```
+            </Tab>
+            <Tab title="Cursor">
+                Add the server to `.cursor/mcp.json`:
+
+                ```json .cursor/mcp.json
+                {
+                    "mcpServers": {
+                        "lightbase": {
+                            "url": "https://mcp.lightbase.co"
+                        }
+                    }
+                }
+                ```
+            </Tab>
+            <Tab title="IntelliJ">
+                Go to **Settings | Tools | AI Assistant | Model Context Protocol (MCP)**, click **Add**, and paste:
+
+                ```json
+                {
+                    "mcpServers": {
+                        "lightbase": {
+                            "url": "https://mcp.lightbase.co"
+                        }
+                    }
+                }
+                ```
+            </Tab>
+            <Tab title="Claude Code">
+                ```bash
+                claude mcp add --transport http lightbase https://mcp.lightbase.co
+                ```
+            </Tab>
+            <Tab title="Codex">
+                Add the server to `~/.codex/config.toml`:
+
+                ```toml ~/.codex/config.toml
+                [mcp_servers.lightbase]
+                url = "https://mcp.lightbase.co"
+                ```
+            </Tab>
+        </Tabs>
+
+        Any other MCP-compatible editor or agent uses the same server URL. Check its own MCP documentation for the exact configuration format.
+    </Step>
+    <Step title="Curate your data (optional)">
+        Data curation aligns the inferred model with the names and structure your team uses. See [Data curation](/data-curation/overview) to learn what you can refine.
+    </Step>
 </Steps>
 
 ## What's next
 
 <Columns cols={2}>
-  <Card title="Repository management" icon="folder-tree" href="/getting-started/repositories">
-    Add or remove repositories and control what Lightbase indexes after installation.
-  </Card>
-  <Card title="Query with the MCP server" icon="comments" href="/mcp/overview">
-    Connect your AI client and ask questions that span your whole system.
-  </Card>
+    <Card title="Repository management" icon="folder-tree" href="/getting-started/repositories">
+        Add or remove repositories and control what Lightbase indexes after installation.
+    </Card>
+    <Card title="How indexing works" icon="magnifying-glass-chart" href="/architecture/indexing-process">
+        See what happens when Lightbase analyzes your code.
+    </Card>
 </Columns>

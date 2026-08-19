@@ -104,11 +104,11 @@ Set it to the organization's slug, the short identifier chosen when it was creat
 
 ## Authentication
 
-The MCP server authenticates with OAuth 2.1. Your client registers itself through Dynamic Client Registration, a standard that lets a client enroll with an authorization server on its own.
+The MCP server uses OAuth 2.1. Each MCP client registers through Dynamic Client Registration, which lets it enroll with the authorization server without manual setup.
 
-The first time your client connects, a browser window opens. Sign in with the account you already use for Lightbase.
+The first time the client connects, it opens a browser window. Sign in with the account you already use for Lightbase.
 
-No API key means there is no long-lived secret stored in a configuration file. Each request is attributed to the person who signed in, and access ends when they leave your Lightbase organization.
+You do not need to generate or add an API key to the client configuration. The OAuth flow manages authentication without storing a long-lived secret there. Lightbase attributes each request to the person who signed in and removes access when they leave the organization.
 
 ## Available tools
 

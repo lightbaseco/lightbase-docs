@@ -1,16 +1,23 @@
 ---
-title: "Languages and frameworks"
-description: "Languages and frameworks Lightbase supports."
+title: "Supported languages"
+description: "The languages Indexer analyzes."
 ---
 
-<Note>
-  This page is a stub. It will list supported languages and describe framework coverage.
-</Note>
+Indexer analyzes the following languages:
 
-## Supported languages
+- C
+- C#
+- Go
+- Java
+- JavaScript
+- Kotlin
+- PHP
+- Python
+- Rust
+- SQL
+- Shell
+- TypeScript
 
-List all supported languages here (including Kotlin).
+Everything [Indexer](/core-concepts/indexing-process) does applies to each of them: entrypoints, the code flows that run from them, and the interactions those flows reach. A repository that mixes several languages is analyzed in all of them, and each file is read by the analyzer for its own language.
 
-## Framework support
-
-Lightbase supports the major web and database frameworks. Describe the extent of framework coverage and what it enables.
+Files written in a language that is not listed are not analyzed and do not appear in the model. Their presence in a repository does not affect the analysis of the rest.

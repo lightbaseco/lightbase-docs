@@ -7,6 +7,15 @@
     "light": "#5c8bff",
     "dark": "#1a4fd6"
   },
+  "background": {
+    "color": {
+      "light": "#FFFDF8",
+      "dark": "#1C1730"
+    }
+  },
+  "fonts": {
+    "family": "Geist"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
@@ -20,13 +29,18 @@
         ]
       },
       {
-        "group": "Core concepts",
+        "group": "Indexing process",
         "pages": [
           "core-concepts/indexing-process",
           "core-concepts/languages",
-          "core-concepts/infrastructure",
+          "core-concepts/infrastructure"
+        ]
+      },
+      {
+        "group": "Core concepts",
+        "pages": [
           "core-concepts/counterparties",
-          "core-concepts/security-model"
+          "core-concepts/business-entities"
         ]
       },
       {
@@ -38,6 +52,12 @@
           "data-curation/counterparties",
           "data-curation/applications"
         ]
+      },
+      {
+        "group": "Security",
+        "pages": [
+          "core-concepts/security-model"
+        ]
       }
     ]
   },
@@ -45,8 +65,8 @@
     "default": "light"
   },
   "logo": {
-    "light": "/logo/lightbase-horizontal.png",
-    "dark": "/logo/lightbase-horizontal.png",
+    "light": "/logo/lightbase-horizontal.svg",
+    "dark": "/logo/lightbase-horizontal-white.svg",
     "href": "https://www.lightbase.co/"
   },
   "navbar": {

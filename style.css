@@ -1,18 +1,6 @@
 /* Intro page background.
    Scoped to the classes used on index.mdx, so it does not affect other pages. */
 
-/* How far the background bleeds past the content column towards the page edge. */
-:root {
-  --lb-bleed: 16rem;
-}
-
-/* The bleed would otherwise widen the document and add a horizontal scrollbar.
-   `clip` prevents that without creating a scroll container. */
-html,
-body {
-  overflow-x: clip;
-}
-
 /* Establishes the stacking context the background sits behind, so the decoration
    can drop below the text without needing a wrapper around the content. */
 main {
@@ -20,10 +8,20 @@ main {
   z-index: 0;
 }
 
+/* Fixed to the viewport, so the dots hold their place while the page scrolls
+   under them. That also drops the horizontal bleed the absolute version needed:
+   the image no longer widens the document, so nothing has to clip it.
+
+   Both offsets reproduce where the absolute version sat, since fixed positioning
+   cannot reference the content column. `top` is the height of the navbar plus the
+   title block, where that column starts. `right` is the gap the old 16rem bleed
+   left between the image and the window: the column sits a constant 27rem from
+   that edge until 95rem, above which `main` stops growing and centres, so half
+   the extra width goes back into the gap. */
 .lb-hero-bg {
-  position: absolute;
-  top: 0;
-  right: calc(-1 * var(--lb-bleed));
+  position: fixed;
+  top: 14.625rem;
+  right: calc(11rem + max(0px, (100vw - 95rem) / 2));
 
   /* Source is 1339px wide, so 669px renders 1:1 on a 2x display. Raising this
      past 669px starts upscaling and the dots go soft. */
@@ -87,4 +85,66 @@ main {
   .lb-hero-bg {
     display: none;
   }
+}
+
+/* Surface colours for the chrome that reads as a raised panel: cards, the
+   next/previous pagination, the page buttons, and dropdown menus. Values are the
+   app's `--card`, `--accent` and `--popover` tokens, so these surfaces look the
+   same here as in the product.
+
+   Site-wide rather than page-scoped, because these elements belong to the theme
+   and not to any one page.
+
+   The `:is()` list takes the specificity of its strongest member, the `#pagination`
+   selector, which is what lets these win over the theme's own `dark:` utilities. */
+:root {
+  --lb-surface: #fbf6f0;
+  --lb-surface-hover: #f9f4e7;
+  --lb-popover: #fefbf7;
+}
+
+.dark {
+  --lb-surface: #231d3a;
+  --lb-surface-hover: #352e50;
+  --lb-popover: #1a1528;
+}
+
+:is(
+  .card,
+  #pagination a,
+  #page-context-menu > button,
+  #search-bar-entry,
+  #theme-preference-menu-trigger
+) {
+  background-color: var(--lb-surface);
+}
+
+/* Dropdown panels sit on their own surface, a shade off the cards. Written out per
+   theme because `[role="menu"]` alone loses to the theme's `dark:` utility, and
+   there is no id in this rule to lend the `:is()` list its specificity. */
+html.dark [role="menu"],
+html:not(.dark) [role="menu"] {
+  background-color: var(--lb-popover);
+}
+
+/* Keeps the hover feedback the theme would otherwise give these controls. */
+:is(
+  #pagination a,
+  #page-context-menu > button,
+  #search-bar-entry,
+  #theme-preference-menu-trigger
+):hover {
+  background-color: var(--lb-surface-hover);
+}
+
+/* Small structural diagrams. Mermaid renders at its natural size, which is far
+   wider than a handful of boxes needs, so the wrapper caps and centers it. */
+.lb-diagram-sm {
+  max-width: 26rem;
+  margin: 0 auto 2rem;
+}
+
+.lb-diagram-sm svg {
+  width: 100%;
+  height: auto;
 }

@@ -3,13 +3,9 @@ title: "Databases and tables"
 description: "Manage your databases, review discovered tables, and refine schemas down to the column."
 ---
 
-Code might describe only part of your data model:
-* Services reach databases through aliases and environment variables whose values never appear in the source.
-* A column no query touches is invisible to indexing.
-* ...
-In **Databases and tables** curation you can fill those gaps.
+Indexer reconstructs each schema from the accesses it observes in the code. Under some circumstances it is not possible to reconstruct every detail precisely, for example when a column is never read by any query, when the hostname only appears as an environment variable, or when logic runs inside the database, in a trigger or a stored procedure.
 
-You can declare the databases you work with, mark replicas and review the tables Lightbase discovered while [indexing](/indexing/indexer). Merging duplicates, and editing schemas down to the column.
+In **Databases and tables** you fill in those gaps. You can declare databases, mark replicas, and review the tables discovered during [indexing](/indexing/indexer), merging duplicates and editing schemas.
 
 ## Manage your databases
 
@@ -19,18 +15,22 @@ Define the databases that matter and describe them in the terms your team uses.
 * **Host and description.** Enough context that anyone following the data lineage knows which system it is.
 * **Replication.** Mark a database as a replica of another, so reads against the replica trace back to the same data as the primary.
 
-## Refine down to the column
+## Edit schemas
 
 A curated table is editable at field level.
 
 * Column **names and types**, plus **primary key** and **nullable** flags.
-* **Foreign keys** pointing at other curated tables, so relationships survive even when the database never declared them.
+* **Foreign keys** pointing at other tables.
 * A **category** per column, and as many **categories** as you need per table. Categories are free-text tags such as `sensitive` or `financial`. They follow the data through every flow that reads it.
 * The **column mapping** per service, so a rename in one place keeps the link to the rest.
 
 ## Upload a DDL
 
-Upload the DDL of a database and Lightbase reconciles it with what it observed in code. You get the columns no query ever referenced, real types, and the constraints the database enforces, merged into the tables you already curated.
+You can generate a DDL file with a schema dump of your database. Once you upload it, the definition becomes authoritative and Indexer keeps it updated if it finds evidence of changes to it.
+
+The model then holds every column with its real type, including those no query touches, and the constraints the database enforces.
+
+The DDL also settles the naming. Applications refer to the same column in different ways, and matching the names used in the code against the ones the database declares keeps those references pointing at a single column.
 
 <Tip>
   A DDL is the fastest way to curate a large, mature schema. Lightbase fills in the structure so you only curate naming and business meaning.

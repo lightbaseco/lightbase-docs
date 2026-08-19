@@ -3,22 +3,24 @@ title: "Applications"
 description: "Manage the applications detected in your code and group them by team or domain."
 ---
 
-An **application** is a deployable unit from your codebase: a backend service, a frontend web app, or a set of scripts.
+An **application** is a deployable unit from your codebase: a backend service, a frontend web app, or a set of scripts. These are the services Indexer identifies in each repository.
 
 [Detection](/indexing/indexer) names each application after its repository or manifest, which is often not the name your team uses. In curation you can rename them and group them by team, domain, stack or any custom grouping you require.
 
 ## Application groups
 
-Group applications into the units you work with: a product, a domain, a platform, a team's surface area. Lightbase then rolls flows and impact up to that level. A blast radius reports "three applications in Payments" instead of listing the parent mono-repo.
+Group applications into the units you work with: a product, a domain, a platform, a team's surface area. Explorations can then be scoped to a group.
+
+<Card>
+  Which external providers do the applications in Payments call?
+</Card>
+
+The question covers every application that domain owns, without naming them one by one.
 
 ## Environment variables
 
-Applications reach their databases and their peers through configuration. Supply the values behind those variables per environment. Lightbase then resolves which [curated database](/data-curation/databases) or application a `DATABASE_URL` points at, turning an inferred connection into a confirmed one.
+Hostnames, connection strings and similar values are injected into an application through environment variables, and might not be available in the code. Supplying those values here lets Indexer resolve a `DATABASE_URL` to a [database](/data-curation/databases), or a service address to the application that serves it.
 
 ## Enable and disable
 
 Disable an application to take it out of the model without changing what you index. Use it for a deprecated application, a folder of generated code, or a false positive from application detection.
-
-<Note>
-  You can always reenable the application to start indexing it again.
-</Note>

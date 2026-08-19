@@ -3,25 +3,14 @@ title: "Counterparties"
 description: "Organize the vendors, platforms, and partners your company interacts with."
 ---
 
-A [counterparty](/core-concepts/counterparties) is something outside your system that your code interacts with: a cloud service, a payment provider, a partner API, a SaaS tool you pay for. Lightbase detects them as it traces your flows and records what kind of interaction it found. In **Counterparties** you rename them, describe what each interaction is for, and organize them into the groups your company uses.
-
-Names and groups are inferred. In curation you can enhance them: rename a counterparty to fit the way your team calls it internally, merge variants of the same one, or change the groups it belongs to.
+A [counterparty](/core-concepts/counterparties) is an external technical component your code interacts with, such as an S3 bucket or the Stripe API. How Indexer groups and names them comes from the business context it extracts from the code, and will not always match how your company refers to them, or its view of what counts as a single counterparty. **Counterparties** allows you to make the necessary edits to the model.
 
 ## Counterparty groups
 
-A [counterparty group](/core-concepts/counterparties#how-counterparties-are-grouped) collects counterparties that belong together. Groups come in two kinds.
+A [counterparty group](/core-concepts/counterparties#how-counterparties-are-grouped) collects counterparties that belong together. Groups come in two kinds, technical and business, and a counterparty can belong to several at once. A bucket holding a customer's data sits in the S3 technical group and in that customer's business group.
 
-<CardGroup cols={2}>
-  <Card title="Technical" icon="cloud">
-    Infrastructure and platforms, for example `AWS`.
-  </Card>
-  <Card title="Business" icon="briefcase">
-    Suppliers, contracted SaaS, clients, or any commercial relationship.
-  </Card>
-</CardGroup>
+Technical groups are inferred from the provider, such as Stripe or S3. Business groups are inferred from the intent observed in the code, which is harder to detect reliably, so they are the ones that usually need curating:
 
-A counterparty can belong to several groups at once. A payments endpoint sits in the group for that vendor and in the group you use to track everything that processes cardholder data.
-
-<Card title="See how counterparties are detected" icon="plug" href="/core-concepts/counterparties" horizontal arrow>
-  Counterparties come out of the interactions Lightbase traces in your code.
-</Card>
+* **Create a business group** for a supplier, a customer or a partner.
+* **Assign counterparties** to the groups they belong to.
+* **Move a counterparty** between groups when a relationship changes.

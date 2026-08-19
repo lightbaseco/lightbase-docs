@@ -9,10 +9,14 @@
   },
   "background": {
     "color": {
+      "light": "#FFFDF8",
       "dark": "#1C1730"
     }
   },
-  "favicon": "/favicon.png",
+  "fonts": {
+    "family": "Geist"
+  },
+  "favicon": "/favicon.ico",
   "navigation": {
     "pages": [
       "index",

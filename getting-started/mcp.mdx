@@ -11,9 +11,10 @@ How this supercharges your agent:
 
 - Give it full visibility of every code flow affected by a change, across every service. This helps agents understand the hidden contract behind a given piece of code and prevents them from breaking downstream consumers or introducing bugs that are difficult to catch.
 - Help it understand the lineage of data: what a given field in the database means, how the content of a report in S3 is calculated, who are the writers and consumers. Because they now have the meaning and intent of the data, they require less input from the user and write code that won't introduce silent data corruption.
-- Enable it to diagnose errors. This is particularly useful when the cause lies outside the current repository or the code alone does not explain the failure, such as a breaking change in an upstream service or incorrect data written by a separate code flow. Your agent can ask Lightbase to explain the root cause and suggest possible fixes.
+- Improve its ability to diagnose errors. Your agent can ask Lightbase to explain the root cause and suggest possible fixes. This is particularly useful when the cause lies outside the current repository or the code alone does not explain the failure. Examples include a breaking change in an upstream service or incorrect data written by another code flow.
+
 <Info>
-  If you [connect your infrastructure](/indexing/infrastructure) to Lightbase, the MCP server can answer infrastructure-related questions and provide relevant context to your agent.
+  If you [connect your infrastructure](/indexing/infrastructure) to Lightbase, the MCP server gives your agent visibility of your cloud resources.
 </Info>
 
 ## Before you start
@@ -73,7 +74,7 @@ Add the endpoint to your client's configuration. The exact format depends on the
     }
     ```
   </Tab>
-  <Tab title="IntelliJ">
+  <Tab title="Jetbrains IDEs">
     Go to **Settings | Tools | AI Assistant | Model Context Protocol (MCP)**, click **Add**, and paste:
 
     ```json

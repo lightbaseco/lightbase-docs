@@ -31,9 +31,9 @@
       {
         "group": "Indexing process",
         "pages": [
-          "core-concepts/indexing-process",
-          "core-concepts/languages",
-          "core-concepts/infrastructure"
+          "indexing/indexer",
+          "indexing/languages",
+          "indexing/infrastructure"
         ]
       },
       {
@@ -56,7 +56,7 @@
       {
         "group": "Security",
         "pages": [
-          "core-concepts/security-model"
+          "security/security-model"
         ]
       }
     ]

@@ -15,7 +15,6 @@
         "group": "Getting started",
         "pages": [
           "getting-started/quickstart",
-          "getting-started/source-providers",
           "getting-started/repositories"
         ]
       },
@@ -24,9 +23,7 @@
         "pages": [
           "architecture/indexing-process",
           "architecture/languages",
-          "architecture/application-detection",
-          "architecture/entrypoints",
-          "architecture/external-interactions",
+          "architecture/counterparties",
           "architecture/infrastructure"
         ]
       },
@@ -39,8 +36,7 @@
       {
         "group": "Security",
         "pages": [
-          "security/analysis-processing",
-          "security/code-storage"
+          "security/security-model"
         ]
       },
       {

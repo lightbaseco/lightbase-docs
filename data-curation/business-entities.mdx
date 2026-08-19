@@ -1,45 +1,18 @@
 ---
 title: "Business entities"
-description: "Group strongly related tables under the concepts your domain has words for."
+description: "Group tables that are part of the same business concept."
 ---
 
-A **business entity** groups tables that hold a strong relationship with each other. `Users` is an entity: the users table plus every normalized table hanging off it — profiles, credentials, addresses, preferences, consents. Your domain has one word for all of that, and a business entity is where that word lives.
+A **business entity** defines a single business concept that is distributed through multiple tables. `Users` is an entity: the users table plus every normalized table hanging off it — profiles, credentials, addresses, preferences, consents. Your domain has one word for all of that. The entity holds all the tables behind it.
 
-Entities are not limited to one database or one service. When the same concept is stored by several applications, a single entity covers all of it, so the concept answers as one thing no matter how many places it is written to.
+An entity can span databases and services. When several services write the same concept, one entity covers every table involved, so a question about `Users` returns all of them.
 
-## Why they change the answers you get
+## Where the first entities come from
 
-Without entities, every question about your business is really a question about tables, and you need the schema in your head before you can ask anything.
-
-<CardGroup cols={2}>
-  <Card title="You ask in business language" icon="search">
-    "Which services can modify a subscription?" resolves without naming a single table.
-  </Card>
-  <Card title="Normalization stops leaking" icon="link">
-    Twelve tables that model one concept answer as that concept.
-  </Card>
-  <Card title="Impact lands where decisions are made" icon="radar">
-    [Blast radius](/mcp/blast-radius) and lineage talk about customers and orders, not `tbl_client_v2`.
-  </Card>
-  <Card title="New engineers get a map" icon="map">
-    The entity list is the shortest readable summary of what your system is about.
-  </Card>
-</CardGroup>
-
-## Lightbase proposes, your domain decides
-
-Lightbase generates a first set of entities from your code and your curated schema. That set is a proposal by design: entity vocabulary is the most company-specific thing in any system. One organization's *customer* is another's *account*, and a third calls it a *party* because that is the word its regulator uses.
-
-| You want to…                                            | Do this                                |
-| ------------------------------------------------------- | -------------------------------------- |
-| Add a concept that only exists in your domain language  | Create an entity                       |
-| Match a proposed entity to the term your teams use      | Rename it                              |
-| Make an entity's meaning explicit rather than inferred  | Add a description                      |
-| Attach the tables that make up the concept              | Assign tables one by one, or in bulk   |
-| Split or regroup a concept as your model evolves        | Reassign tables between entities       |
+Lightbase generates a first set of entities from your code and your curated schema. Treat that set as a starting point. Entity vocabulary is company-specific: one organization's *customer* is another's *account*, and a third calls it a *party* because that is the word its regulator uses.
 
 <Tip>
-  Start with the ten or twenty entities that carry your business. Coverage matters less than getting the core vocabulary right — the long tail can wait until someone needs it.
+  Start with the ten or twenty entities that carry your business. Get the core vocabulary right and leave the long tail until someone needs it.
 </Tip>
 
 <Card title="Curate the tables underneath" icon="database" href="/data-curation/databases" horizontal arrow>

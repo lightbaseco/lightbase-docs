@@ -38,11 +38,11 @@ The first run indexes a repository completely, which can take a couple of hours 
 
 Incremental runs happen once a day, for the repositories that have changes in them. Indexing on every commit is available on request.
 
-Indexed results are stored per organization. [Code storage](/security/code-storage) describes how they are protected.
+Indexed results are stored per organization. [Code storage](/security/security-model) describes how they are protected.
 
 ## What Indexer finds in a repository
 
-Indexing begins with the connected repositories. Indexer identifies the services in each one from files like `go.mod`, `pom.xml`, or a `package.json` with a start script. Repositories can yield one service or more, especially monorepos, and each service is analyzed separately.
+Indexing begins with the connected repositories. It identifies the services in each one from files like `go.mod`, `pom.xml`, or a `package.json` with a start script. Repositories can yield one service or more, especially monorepos, and each service is analyzed separately.
 
 In some cases this heuristic leads to incorrect boundaries. They can be adjusted in [Application management](/data-curation/applications).
 
@@ -76,7 +76,7 @@ For databases, Indexer also reconstructs the schema described in the source.
   An authoritative schema can be supplied through [DDL upload](/data-curation/databases). Those tables are then defined by it.
 </Accordion>
 
-## How service-to-service calls are connected
+## How service-to-service calls are resolved
 
 Each outgoing call made by a service is extracted and matched to the correct entrypoint in the receiving service.
 

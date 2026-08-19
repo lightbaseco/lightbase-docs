@@ -136,3 +136,15 @@ html:not(.dark) [role="menu"] {
 ):hover {
   background-color: var(--lb-surface-hover);
 }
+
+/* Small structural diagrams. Mermaid renders at its natural size, which is far
+   wider than a handful of boxes needs, so the wrapper caps and centers it. */
+.lb-diagram-sm {
+  max-width: 26rem;
+  margin: 0 auto 2rem;
+}
+
+.lb-diagram-sm svg {
+  width: 100%;
+  height: auto;
+}

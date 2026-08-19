@@ -1,5 +1,5 @@
 ---
-title: "The indexing process"
+title: "Indexer"
 description: "How Indexer reads connected repositories and builds the model of an organization's architecture."
 ---
 
@@ -44,7 +44,7 @@ Indexed results are stored per organization. [Security model](/core-concepts/sec
 
 Indexing begins with the connected repositories. It identifies the services in each one from files like `go.mod`, `pom.xml`, or a `package.json` with a start script. Repositories can yield one service or more, especially monorepos, and each service is analyzed separately.
 
-In some cases this heuristic leads to incorrect boundaries. They can be adjusted in [Application management](/data-curation/applications).
+Under some circumstances this heuristic can lead to incorrect boundaries. They can be adjusted in [Application management](/data-curation/applications).
 
 ## Where a code flow starts
 
@@ -69,23 +69,27 @@ Each interaction is recorded against the flow that reached it. It becomes possib
 For databases, Indexer also reconstructs the schema described in the source.
 
 <Accordion title="How a schema is reconstructed without a DDL">
-  Indexer reads ORM and ODM models, raw SQL, data access classes and connection configuration, and combines them into the tables and columns they describe.
+  Indexer reads ORM and ODM models, raw SQL, data access classes and connection configuration, and combines them into the tables, columns and relationships they describe.
 
-  Some information might not be recoverable from the code alone. The hostname of a database, for example, is often passed as an environment variable, and Indexer keeps the name of that variable.
+  Some information is not recoverable from the code alone. When a flow calls a stored procedure whose body lives in the database, Indexer records the call, and the tables that procedure reads and writes stay unknown. A trigger that fires on insert and writes elsewhere does not appear in the source at all.
 
   An authoritative schema can be supplied through [DDL upload](/data-curation/databases). Those tables are then defined by it.
 </Accordion>
 
 ## How service-to-service calls are resolved
 
-Each outgoing call made by a service is extracted and matched to the correct entrypoint in the receiving service.
+Indexer resolves synchronous calls made over HTTP and gRPC, and asynchronous communication through message queues. Each outgoing call is matched to the entrypoint that receives it in another service.
 
-| Transport | Extracted from the call | Matched against |
-| --- | --- | --- |
-| HTTP | Target host, verb and route, normalized | The route patterns declared in the receiving service |
-| Message queues | Host, topic and shape of the message | The consumers of that queue |
+The target of a call is often not a literal in the code. The hostname is injected as an environment variable, a configuration key, or through a service discovery client, and it can name a load balancer or a reverse proxy that rewrites the host and the path before the request reaches the service handling it. Paths can be assembled during code execution. Multiple services can declare similar routes. Topic names can be composed at runtime, or differ only in an environment segment.
 
-As with database extraction, not all of the necessary information is mechanically recoverable from the code. Indexer uses multiple layers of matching to establish the correct target, including semantic information about each candidate.
+Indexer matches on the combination of everything both ends expose:
+
+- **Host**, either literal or through the reference that stands for it: an environment variable name, a configuration key, a constant.
+- **Verb and path** for HTTP, service and method for gRPC, the topic for a queue.
+- **Path parameters and arguments**, reconstructed by following the flow of the code up to the call, including the shape of the message a publisher sends.
+- **Semantic context**: what the calling code is doing and what the intent of the call is, taken from the different flows that the call participates in.
+
+That evidence is matched against the index of every entrypoint across the organization's repositories. A connection is recorded when the evidence identifies a single entrypoint with high confidence. Where it does not, the call stays in the model with everything known about it, and without a resolved target.
 
 ## What is exact and what is inferred
 
@@ -98,7 +102,6 @@ Indexer extracts most information deterministically, through static code analysi
 | Code flows | The calls an entrypoint makes, resolved to the functions they run | **Exact** |
 | Table access, read or write | ORM models, SQL, and data access code along the flow | **Exact** where the source names the table |
 | Database schemas | Models, queries, and configuration, or an uploaded DDL | **Exact** from a DDL, reconstructed otherwise |
-| Calls between services | The host, verb and route at both ends | **Exact** where the match is unambiguous, otherwise inferred |
-| Queue links | The host, topic and message shape at both ends | **Exact** where the match is unambiguous, otherwise inferred |
+| Connections between services | The evidence both ends expose, matched against every entrypoint | **Exact** where the match is unambiguous, otherwise inferred |
 | Counterparties and their groups | The destination of each external call | **Inferred** |
 | Business entities | The tables and flows that share a concept | **Inferred** |

@@ -29,13 +29,18 @@
         ]
       },
       {
-        "group": "Core concepts",
+        "group": "Indexing process",
         "pages": [
           "core-concepts/indexing-process",
           "core-concepts/languages",
-          "core-concepts/infrastructure",
+          "core-concepts/infrastructure"
+        ]
+      },
+      {
+        "group": "Core concepts",
+        "pages": [
           "core-concepts/counterparties",
-          "core-concepts/security-model"
+          "core-concepts/business-entities"
         ]
       },
       {
@@ -46,6 +51,12 @@
           "data-curation/business-entities",
           "data-curation/counterparties",
           "data-curation/applications"
+        ]
+      },
+      {
+        "group": "Security",
+        "pages": [
+          "core-concepts/security-model"
         ]
       }
     ]

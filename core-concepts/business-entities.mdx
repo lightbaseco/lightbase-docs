@@ -1,0 +1,23 @@
+---
+title: "Business entities"
+description: "The domain concepts an organization works with, and the tables, flows and services behind them."
+---
+
+Every organization has a set of concepts it talks about every day. Some are common to any business, like a Customer. Others belong to its own domain: an insurance Policy, a Shipment, a Patient Record. These concepts usually live in the database as tables, frequently as several tables that together hold everything relevant about one of them.
+
+The model represents those concepts as business entities. A business entity groups the tables behind a concept, and ties the services, code flows and data that operate on it to the concept itself. The model can then establish:
+
+- **The impact of a change in domain terms**: every service and flow that touches a Patient Record, before its tables are restructured.
+- **Ownership and dependency**: which services write a business entity, and which only read it.
+- **Where the data goes**: which [counterparties](/core-concepts/counterparties) receive the data of a business entity, and through which flows.
+- **Grounding for agents**: a request to add consent tracking to the Customer resolves to the tables, flows and services it involves.
+
+## What a business entity contains
+
+A business entity holds the tables where the concept lives. A Patient Record is not one table: it is the record itself plus the admissions, diagnoses, consents and contact details hanging off it. Those tables can sit in different databases and be written by different services, and the entity covers all of them.
+
+Each table belongs to one business entity. A table that clearly serves two concepts is usually a sign to look at the table rather than the entity.
+
+<Note>
+  A first set of business entities is generated from the code and the curated schema. The vocabulary is specific to each organization, so both the names and the grouping of tables can be edited in [Business entities](/data-curation/business-entities).
+</Note>

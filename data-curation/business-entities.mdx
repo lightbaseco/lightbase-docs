@@ -3,7 +3,7 @@ title: "Business entities"
 description: "Group tables that are part of the same business concept."
 ---
 
-A **business entity** defines a single business concept that is distributed through multiple tables. `Users` is an entity: the users table plus every normalized table hanging off it — profiles, credentials, addresses, preferences, consents. Your domain has one word for all of that. The entity holds all the tables behind it.
+A [business entity](/core-concepts/business-entities) defines a single business concept that is distributed through multiple tables. `Users` is an entity: the users table plus every normalized table hanging off it — profiles, credentials, addresses, preferences, consents. Your domain has one word for all of that. The entity holds all the tables behind it.
 
 An entity can span databases and services. When several services write the same concept, one entity covers every table involved, so a question about `Users` returns all of them.
 

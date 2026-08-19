@@ -7,16 +7,16 @@ Every system interacts with multiple external parties. These can be a cloud prov
 
 The model records those integration points as counterparties.
 
+<div className="lb-diagram-sm">
+
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'inherit','primaryColor':'#ffffff','primaryBorderColor':'#2469ff','primaryTextColor':'#1a4fd6','lineColor':'#5c8bff','clusterBkg':'#f7f9ff','clusterBorder':'#d7e2ff'}}}%%
-flowchart LR
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'inherit','fontSize':'12px','primaryColor':'#ffffff','primaryBorderColor':'#2469ff','primaryTextColor':'#1a4fd6','lineColor':'#5c8bff','clusterBkg':'#f7f9ff','clusterBorder':'#d7e2ff'},'flowchart':{'nodeSpacing':16,'rankSpacing':20,'padding':6,'diagramPadding':4}}}%%
+flowchart TB
   subgraph AWS[AWS]
     subgraph S3[S3]
+      direction LR
       B1[(invoices-bucket)]
       B2[(partner-uploads)]
-    end
-    subgraph LAMBDA[Lambda]
-      F1([invoice-worker])
     end
   end
 
@@ -24,6 +24,8 @@ flowchart LR
     P1[Payments API]
   end
 ```
+
+</div>
 
 ## What a counterparty is
 

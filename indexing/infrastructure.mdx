@@ -6,28 +6,26 @@ description: "Connect your cloud account so Lightbase relates your code to the i
 <Note>Infrastructure support is optional.</Note>
 <Info>
   This feature is in development.\
-  Reach out to your Lightbase contact to have it enabled for evaluation.
+  Reach out to your Lightbase contact to join the beta program.
 </Info>
 
 Lightbase can index your cloud infrastructure, adding it to the context it already has about your organization and raising the level of detail in the model it builds of your system. Connecting your infrastructure is useful in several ways:
 
-- **Infrastructure indexing lets Lightbase answer questions about cloud resources.** It answers them in chat or through the MCP server. Examples include:
+- **Infrastructure indexing gives your agent visibility of your cloud resources.** For example:
 
   - Which API Gateway endpoints are backed by this Lambda function?
   - Which buckets are publicly accessible?
   - Which roles can read from the `customer-data` table?
   - Is the payments API reachable from the internet, or only from inside the VPC?
 
-- **Lightbase relates each application to the infrastructure it runs on.** The relationship extends to the instance, container, or function serving it. This context lets Lightbase anticipate problems before they cause an incident and troubleshoot failures where the cause isn't only the code. Examples include:
+- **Lightbase ties each application to the infrastructure it runs on.** The relationship extends to the instance, container, or function serving it. This context lets agents anticipate problems before they cause an incident and troubleshoot failures where the cause isn't only the code. Examples include:
 
   - An application hitting a scaling limit
   - A misconfigured gateway stopping requests
   - A service account missing a permission it needs at runtime
   - A security group blocking a connection the code expects to make
 
-- **Infrastructure context adds precision and detail to the connections Lightbase finds in code.** Some of the information behind those connections exists only in the infrastructure. Lightbase incorporates this infrastructure context into the model.
-
-- **Direct cloud access lets Lightbase index serverless code outside connected repositories.** When a function's source exists only in a cloud account, Lightbase reads it directly from the function. The source becomes part of the model alongside code from connected repositories. This includes functions edited in the console or deployed outside version control.
+- **Infrastructure context adds precision and detail to the connections Lightbase finds in code.** Some of the information behind those connections, such as injected environment variables or the services sitting behind a load balancer, exist only in the infrastructure. Lightbase incorporates this infrastructure context into the model.
 
 ## Cloud providers
 
@@ -39,7 +37,7 @@ Lightbase can index your cloud infrastructure, adding it to the context it alrea
 
 #### Setup
 
-To analyze your infrastructure, Lightbase needs read-only visibility into your AWS account. You grant access through an AWS CloudFormation stack. Lightbase gives you a direct link to the Quick create stack page in the AWS console, with the template and its parameters already filled in, so there's nothing to download or upload yourself.
+To analyze your infrastructure, Lightbase needs read-only access to your AWS account. The quickest way to get started is through an AWS CloudFormation stack. Lightbase gives you a direct link to the Quick create stack page in the AWS console, with the template and its parameters already filled in, so there's nothing to download or upload yourself.
 
 <Info>
   Permissions are strictly read-only. Lightbase only ever calls `Describe`, `List`, and `Get` operations, and never creates, modifies, or deletes anything in your account. For AWS Secrets Manager specifically, Lightbase reads metadata such as name and rotation configuration, never the secret value itself.
@@ -48,7 +46,7 @@ To analyze your infrastructure, Lightbase needs read-only visibility into your A
 There are two ways to connect, depending on whether you use AWS Organizations:
 
 - **Organization account**: connect your organization's management account, then choose which member accounts to grant access to.
-- **Individual account**: connect a single AWS account. Use this if you don't use AWS Organizations, or only want to give Lightbase access to one account.
+- **Individual account**: connect a single AWS account at a time. Use this if you don't use AWS Organizations, or only want to give Lightbase access to one account.
 
 The values shown below are examples. Use the ones your own setup link and templates provide.
 
@@ -108,10 +106,6 @@ The values shown below are examples. Use the ones your own setup link and templa
   </Tab>
 </Tabs>
 
-<Check>
-  The stack reaches `CREATE_COMPLETE` and the new role appears in IAM. Lightbase confirms the connection once it can assume the role.
-</Check>
-
 #### What Lightbase discovers
 
 Lightbase catalogs your AWS resources by service. The groups below cover the services that shape the model of your system. Each one names the resources Lightbase reads, and what they add to that model.
@@ -120,7 +114,7 @@ Lightbase catalogs your AWS resources by service. The groups below cover the ser
   <Accordion title="Compute (EC2)" description="Instances, volumes, and network interfaces.">
     EC2 instances run applications on virtual machines, with volumes for block storage and network interfaces for VPC connectivity.
 
-    Lightbase links each application to the instance that runs it. It records shared hosts, attached volumes, and network interfaces. These relationships identify the compute, storage, and network resources involved in failures that code alone cannot explain.
+    Lightbase links each application to the instance that runs it. It records shared hosts, attached volumes, and network interfaces. These relationships identify the compute, storage, and network resources involved in failures that are not visible in the code.
   </Accordion>
   <Accordion title="Networking" description="VPCs, subnets, security groups, and gateways.">
     VPCs and subnets define network boundaries, while security groups, route tables, and gateways control which resources can communicate and where traffic can go.
@@ -173,8 +167,3 @@ Lightbase catalogs your AWS resources by service. The groups below cover the ser
     Lightbase maps each gateway route to the function or application behind it. This connects an [entrypoint](/indexing/indexer) found in code to the path, method, and stage used by callers. Lightbase also records which routes are exposed.
   </Accordion>
 </AccordionGroup>
-
-<Columns cols={2}>
-  <Card title="How applications are detected" icon="search" href="/indexing/indexer" horizontal arrow />
-  <Card title="Connect the MCP server" icon="plug" href="/getting-started/mcp" horizontal arrow />
-</Columns>

@@ -54,9 +54,9 @@ You need:
         During setup, you choose which repositories Lightbase indexes. The rest stay disabled and are excluded from analysis. You can change this selection at any time, see [Repository management](/getting-started/repositories).
     </Step>
     <Step title="Lightbase builds your model">
-        Lightbase indexes the selected repositories automatically to build the first version of your organization's model. You don't need to trigger anything. See [the indexing process](/architecture/indexing-process) for what happens during the initial index.
+        Lightbase indexes the selected repositories automatically to build the first version of your organization's model. You don't need to trigger anything. See [the indexing process](/core-concepts/indexing-process) for what happens during the initial index.
     </Step>
-    <Step title="Connect the MCP server (optional)">
+    <Step title="Connect the MCP server">
         Give your AI client access to your model through the Lightbase MCP server. Point your client at:
 
         ```
@@ -126,9 +126,6 @@ You need:
 
         Any other MCP-compatible editor or agent uses the same server URL. Check its own MCP documentation for the exact configuration format.
     </Step>
-    <Step title="Curate your data (optional)">
-        Data curation aligns the inferred model with the names and structure your team uses. See [Data curation](/data-curation/overview) to learn what you can refine.
-    </Step>
 </Steps>
 
 ## What's next
@@ -137,7 +134,7 @@ You need:
     <Card title="Repository management" icon="folder-tree" href="/getting-started/repositories">
         Add or remove repositories and control what Lightbase indexes after installation.
     </Card>
-    <Card title="How indexing works" icon="magnifying-glass-chart" href="/architecture/indexing-process">
+    <Card title="How indexing works" icon="magnifying-glass-chart" href="/core-concepts/indexing-process">
         See what happens when Lightbase analyzes your code.
     </Card>
 </Columns>

@@ -15,28 +15,18 @@
         "group": "Getting started",
         "pages": [
           "getting-started/quickstart",
-          "getting-started/repositories"
+          "getting-started/repositories",
+          "getting-started/mcp"
         ]
       },
       {
-        "group": "Architecture",
+        "group": "Core concepts",
         "pages": [
-          "architecture/indexing-process",
-          "architecture/languages",
-          "architecture/counterparties",
-          "architecture/infrastructure"
-        ]
-      },
-      {
-        "group": "MCP server",
-        "pages": [
-          "mcp/overview"
-        ]
-      },
-      {
-        "group": "Security",
-        "pages": [
-          "security/security-model"
+          "core-concepts/indexing-process",
+          "core-concepts/languages",
+          "core-concepts/infrastructure",
+          "core-concepts/counterparties",
+          "core-concepts/security-model"
         ]
       },
       {

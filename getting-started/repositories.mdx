@@ -37,7 +37,6 @@ When you **enable** a repository again, Lightbase queues it as **Pending** and i
 
 Some repositories are left out automatically, either when Lightbase first lists what it can access or during ongoing synchronization:
 
-- **Empty repositories.** Repositories with no commits are marked **Empty** and skipped. If commits are added later, Lightbase picks the repository up on the next sync.
 - **Archived repositories.** Repositories your provider has archived are excluded and not offered for indexing.
 - **Unsupported repositories.** If the indexer cannot process a repository's contents, it is marked **Unsupported** and skipped.
 
@@ -54,10 +53,10 @@ Lightbase periodically scans the repositories in your connected provider to keep
 ## What's next
 
 <Columns cols={2}>
-  <Card title="How indexing works" icon="magnifying-glass-chart" href="/architecture/indexing-process">
+  <Card title="How indexing works" icon="magnifying-glass-chart" href="/core-concepts/indexing-process">
     See what happens when Lightbase analyzes your code.
   </Card>
-  <Card title="Security model" icon="shield-halved" href="/security/security-model">
+  <Card title="Security model" icon="shield-halved" href="/core-concepts/security-model">
     See how Lightbase secures your data at every step.
   </Card>
 </Columns>

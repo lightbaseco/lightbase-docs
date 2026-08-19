@@ -16,7 +16,7 @@
   "fonts": {
     "family": "Geist"
   },
-  "favicon": "/favicon.ico",
+  "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
       "index",

@@ -3,14 +3,14 @@ title: "MCP server"
 description: "Give your agent full context of your system through the Lightbase MCP server."
 ---
 
-Your agent works with the context of the repository you have open. However, Lightbase has indexed every repository in your organization and built one model of your system. That model holds every relationship between your services, [databases](/data-curation/databases), [business entities](/data-curation/business-entities), and [counterparties](/data-curation/counterparties).
+Lightbase indexes every repository in your organization and builds one model of your entire system. This model holds every relationship between your services, [databases](/data-curation/databases), [business entities](/data-curation/business-entities), and [counterparties](/data-curation/counterparties), knowledge that is often fragmented among teams and people.
 
-To give your agent that context, Lightbase exposes an MCP server. You keep describing your task to your agent the way you do now. The agent decides when the open repository doesn't hold the answer and calls Lightbase. It gets that context back and keeps working.
+Your agent works only with the context of the repository it's working on. The Lightbase MCP gives your agent access to that model providing it answers every aspect of your full codebase and business.  
 
-Some examples of when your agent could call Lightbase:
+How this supercharges your agent:
 
-- If your agent needs the purpose behind the code it's reading, it can call Lightbase for the context the file doesn't hold. That adds the use case the code belongs to, the code flow it's part of, who calls into it, and the outputs it produces. Your agent keeps working without altering what that code is there to do.
-- If your agent is about to change a resource other services share, it can call Lightbase first. The resource might be a bucket, an SQS queue, or the response shape of an HTTP handler, among others. Lightbase returns every other service that reads or writes it, so your agent can tell you which contracts the edit would break.
+- Give it full visibility of every code flow affected by a change, across every service. This helps agents understand the hidden contract behind a given piece of code and prevents them from breaking downstream consumers or introducing bugs that are difficult to catch.
+- Help it understand the lineage of data: what a given field in the database means, how the content of a report in S3 is calculated, who are the writers and consumers. Because they now have the meaning and intent of the data, they require less input from the user and write code that won't introduce silent data corruption.
 - If your agent is debugging an error whose cause sits outside the repository, it can call Lightbase for the causes it can't see. For example: a role missing a permission, a security group blocking the connection, or an upstream service that changed its response shape. Lightbase points at the one that fits, so your agent applies the right fix.
 - If your agent needs the infrastructure behind the code it reads, it can call Lightbase for the answer. For example: the role a function runs under, the queue a producer writes to, or the domain in front of a route.
 

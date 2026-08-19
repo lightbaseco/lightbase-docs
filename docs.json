@@ -7,7 +7,12 @@
     "light": "#5c8bff",
     "dark": "#1a4fd6"
   },
-  "favicon": "/favicon.svg",
+  "background": {
+    "color": {
+      "dark": "#1C1730"
+    }
+  },
+  "favicon": "/favicon.png",
   "navigation": {
     "pages": [
       "index",
@@ -45,8 +50,8 @@
     "default": "light"
   },
   "logo": {
-    "light": "/logo/lightbase-horizontal.png",
-    "dark": "/logo/lightbase-horizontal.png",
+    "light": "/logo/lightbase-horizontal.svg",
+    "dark": "/logo/lightbase-horizontal-white.svg",
     "href": "https://www.lightbase.co/"
   },
   "navbar": {

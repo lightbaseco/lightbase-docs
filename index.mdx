@@ -4,17 +4,24 @@ description: "Lightbase is the code intelligence layer that helps engineers and 
 keywords: ["code intelligence", "blast radius", "impact analysis", "data lineage", "microservices"]
 ---
 
+Real production codebases can span hundreds or thousands of services, with relationships between them that are not always clear. A change in one service can easily have unintended consequences in downstream consumers, especially when they belong to other teams. This increases the risk of production incidents or subtle data corruption that could be harder to detect.
+
 <div className="lb-flow">
   <Frame caption="Visualizing a flow traced across service boundaries in the Lightbase UI">
     <img src="/images/flow.png" alt="A Lightbase code flow showing upstream callers in two services, an HTTP entrypoint, and the functions it calls downstream" />
   </Frame>
 </div>
 
-Real production codebases can span hundreds or thousands of services, with relationships between them that are not always clear. A change in one service can easily have unintended consequences in downstream consumers, especially when they belong to other teams. This increases the risk of production incidents or subtle data corruption that could be harder to detect.
+Lightbase is the code intelligence layer for large codebases. It indexes your repositories, traces each code flow from the entrypoint that starts it, and builds one model of your system:
 
-Lightbase is the code intelligence layer for large codebases, built on a model of every service, endpoint, call between services, and the data they share. It indexes your repositories and traces each code flow from the entrypoint that starts it to the databases, queues, and external providers it reaches.
+- **Every service and endpoint**, and the calls that cross between them.
+- **The databases, queues and external providers** each flow reaches.
+- **The schema of every database**, reconstructed from the code that defines and queries it.
+- **The lineage of the data** that moves through the system.
 
-You explore that model while designing new functionality, and your agents reach the same model through the MCP server.
+While planning a feature or a refactor, you see the internal and third-party services the work involves, the business flows a change will impact, and the lineage of every column it touches.
+
+Through the MCP server, your agents reach the same model, so they can verify the impact of a change on downstream services and not introduce hard to catch bugs or silent data corruption.
 
 <Columns cols={2}>
   <Card title="Design projects that span services" icon="diagram-project">
@@ -27,7 +34,7 @@ You explore that model while designing new functionality, and your agents reach 
     See the data shared with them and the business flows behind each call.
   </Card>
   <Card title="Reduce the MTTR of production incidents" icon="gauge-high">
-    Root cause analysis is faster and more complete.
+    Root cause analysis is faster, even for complex distributed bugs.
   </Card>
 </Columns>
 

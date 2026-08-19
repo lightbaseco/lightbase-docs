@@ -140,22 +140,22 @@ Lightbase catalogs your AWS resources by service. The groups below cover the ser
   <Accordion title="Storage" description="S3 buckets.">
     S3 buckets store objects used by code flows. Bucket policies and configuration control access, public exposure, and retention.
 
-    Lightbase resolves which applications read from and write to each bucket. It records access, exposure, and retention settings alongside those relationships. This shows who can reach the data, whether it is internet-accessible, and how long stored objects remain available. For example, retention settings indicate whether an invoice written last quarter remains in the bucket.
+    Lightbase resolves which applications read from and write to each bucket. It records access, exposure, and retention settings alongside those relationships. This shows who can reach the data, whether it is internet-accessible, and how long stored objects remain available.
   </Accordion>
   <Accordion title="Serverless" description="Lambda functions.">
     Lambda functions run code in response to events without a persistent server. AWS stores their deployed source and runtime configuration.
 
-    Lightbase reads and indexes the deployed source, including code that never reached a connected repository. This keeps a code flow connected as it passes through the function. Lightbase also reads function configuration and environment variables to resolve the resources the function accesses.
+    Lightbase reads deployed source code that is not available in connected repositories and adds it to the model. It also maps each function to its surrounding infrastructure. Lightbase records which resources and services can invoke the function, which resources the function can access, and the permissions behind those relationships.
   </Accordion>
   <Accordion title="Databases" description="DynamoDB tables.">
     DynamoDB tables store items under partition and optional sort keys. Secondary indexes support additional query patterns.
 
-    Lightbase reads table keys and indexes to add infrastructure context to the [curated schema](/data-curation/databases). It resolves which roles and applications can access each table. This confirms whether the permissions in AWS support the data access found in code.
+    Lightbase uses database metadata to represent the data layer more precisely in the model.
   </Accordion>
   <Accordion title="Messaging" description="SQS queues.">
     SQS queues buffer messages between producers and consumers, allowing applications to exchange work asynchronously.
 
-    Lightbase uses the queue resources in an AWS account to attach producers and consumers to the same queue, even when code refers to it differently. It also records queue configuration and the applications permitted to send or receive messages.
+    Lightbase uses queue metadata to represent asynchronous communication between applications more precisely in the model.
   </Accordion>
   <Accordion title="Identity and access (IAM)" description="Users, roles, and groups.">
     IAM users, roles, and groups define identities in an AWS account. Attached and inline policies control which actions those identities can perform on resources.

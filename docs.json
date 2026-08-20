@@ -100,5 +100,10 @@
       "github": "https://github.com/orgs/lightbaseco/",
       "linkedin": "https://linkedin.com/company/lightbaseco"
     }
+  },
+  "integrations": {
+    "posthog": {
+        "apiKey": "phc_GjQNhrHLXNGz8ju7lmPiKJDPNCquzUodd769jm3ZhZz"
+    }
   }
 }

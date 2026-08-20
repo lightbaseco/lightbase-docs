@@ -103,7 +103,8 @@
   },
   "integrations": {
     "posthog": {
-        "apiKey": "phc_GjQNhrHLXNGz8ju7lmPiKJDPNCquzUodd769jm3ZhZz"
+        "apiKey": "phc_GjQNhrHLXNGz8ju7lmPiKJDPNCquzUodd769jm3ZhZz",
+        "apiHost": "https://eu.i.posthog.com"
     }
   }
 }
